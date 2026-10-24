@@ -245,6 +245,9 @@
   --paper-muted: #9c99c4;
   --toast: #24214d;
   --coin: #ffbe0b;
+  --hero-a: #7b5bff;
+  --hero-b: #5a35f0;
+  --on-hero: #ffffff;
   --radius: 18px;
   --btn-radius: 14px;
   --sans: 'Nunito', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
@@ -281,20 +284,20 @@
   border: 0;
 }
 [data-style='game'] .hero-card {
-  background: linear-gradient(135deg, #7b5bff, #5a35f0);
-  color: #ffffff;
+  background: linear-gradient(135deg, var(--hero-a), var(--hero-b));
+  color: var(--on-hero);
 }
 [data-style='game'] .hero-card .muted,
 [data-style='game'] .hero-card .eyebrow,
 [data-style='game'] .hero-card .flame-l {
-  color: rgba(255, 255, 255, 0.8);
+  color: color-mix(in srgb, var(--on-hero) 80%, transparent);
 }
 [data-style='game'] .hero-card .bar {
-  background: rgba(255, 255, 255, 0.25);
-  border-color: rgba(255, 255, 255, 0.4);
+  background: color-mix(in srgb, var(--on-hero) 25%, transparent);
+  border-color: color-mix(in srgb, var(--on-hero) 40%, transparent);
 }
 [data-style='game'] .bar.gold > div {
-  background: linear-gradient(90deg, var(--coin), #ffd75e);
+  background: linear-gradient(90deg, var(--coin), color-mix(in srgb, var(--coin) 70%, #ffffff));
 }
 [data-style='game'] .btn,
 [data-style='game'] .chip,
@@ -335,7 +338,7 @@
   stroke-width: 10;
 }
 [data-style='game'] .ring-bg {
-  stroke: #e3e0ff;
+  stroke: color-mix(in srgb, var(--gold) 18%, var(--card));
   stroke-width: 10;
 }
 [data-style='game'] .cb-node.on circle {
@@ -349,7 +352,7 @@
   stroke: var(--coin);
 }
 [data-style='game'] .badge.on {
-  background: #fff7d6;
+  background: color-mix(in srgb, var(--coin) 22%, var(--card));
   border-color: var(--line);
 }
 [data-style='game'] .badge-icon {
@@ -361,13 +364,14 @@
   box-shadow: 0 4px 0 var(--line);
 }
 [data-style='game'] .toast.big {
-  background: linear-gradient(135deg, #7b5bff, #5a35f0);
+  background: linear-gradient(135deg, var(--hero-a), var(--hero-b));
+  color: var(--on-hero);
 }
 [data-style='game'] .toast .xp {
   color: var(--coin);
 }
 [data-style='game'] .banner.won {
-  background: #e7fbef;
+  background: color-mix(in srgb, var(--green) 14%, var(--card));
 }
 [data-style='game'] .sp-page {
   border: 2.5px solid var(--line);
@@ -463,4 +467,206 @@
 }
 [data-style='board'] .project-head .stage {
   color: #ffd27a;
+}
+
+/* ===================================================================
+   Game Night colour palettes, set with <html data-palette="…">.
+   Same chunky shapes; only the colours change.
+   =================================================================== */
+:root[data-style='game'][data-palette='arcade'] {
+  --bg: #f1efff;
+  --bg2: #ffffff;
+  --card: #ffffff;
+  --card2: #f6f4ff;
+  --line: #24214d;
+  --text: #24214d;
+  --muted: #6c6996;
+  --gold: #6a45ff;
+  --gold2: #5a35f0;
+  --coin: #ffbe0b;
+  --green: #18b85a;
+  --red: #ff4d6d;
+  --blue: #2f9bff;
+  --purple: #ff9f1c;
+  --hero-a: #7b5bff;
+  --hero-b: #5a35f0;
+  --on-hero: #ffffff;
+  --on-accent: #ffffff;
+  --toast: #24214d;
+  --paper-line: color-mix(in srgb, #24214d 25%, #ffffff);
+  --paper-muted: color-mix(in srgb, #24214d 45%, #ffffff);
+  color-scheme: light;
+}
+:root[data-style='game'][data-palette='ocean'] {
+  --bg: #e4f4ff;
+  --bg2: #ffffff;
+  --card: #ffffff;
+  --card2: #f0f9ff;
+  --line: #0b2545;
+  --text: #0b2545;
+  --muted: #4f6a85;
+  --gold: #0a74ff;
+  --gold2: #005ad1;
+  --coin: #ffb703;
+  --green: #06c48a;
+  --red: #ff5a5f;
+  --blue: #00a6d6;
+  --purple: #ff8a00;
+  --hero-a: #1aa0ff;
+  --hero-b: #0a5bdb;
+  --on-hero: #ffffff;
+  --on-accent: #ffffff;
+  --toast: #0b2545;
+  --paper-line: color-mix(in srgb, #0b2545 25%, #ffffff);
+  --paper-muted: color-mix(in srgb, #0b2545 45%, #ffffff);
+  color-scheme: light;
+}
+:root[data-style='game'][data-palette='sunset'] {
+  --bg: #fff0e3;
+  --bg2: #ffffff;
+  --card: #ffffff;
+  --card2: #fff7f0;
+  --line: #3b1a1f;
+  --text: #3b1a1f;
+  --muted: #8a5e5a;
+  --gold: #ff4f3f;
+  --gold2: #e0352a;
+  --coin: #ffc93c;
+  --green: #1fa97a;
+  --red: #d7263d;
+  --blue: #2b8fd6;
+  --purple: #8f3fd6;
+  --hero-a: #ff7a45;
+  --hero-b: #e0352a;
+  --on-hero: #ffffff;
+  --on-accent: #ffffff;
+  --toast: #3b1a1f;
+  --paper-line: color-mix(in srgb, #3b1a1f 25%, #ffffff);
+  --paper-muted: color-mix(in srgb, #3b1a1f 45%, #ffffff);
+  color-scheme: light;
+}
+:root[data-style='game'][data-palette='mint'] {
+  --bg: #e6f8f0;
+  --bg2: #ffffff;
+  --card: #ffffff;
+  --card2: #f2fcf7;
+  --line: #183a33;
+  --text: #183a33;
+  --muted: #557a71;
+  --gold: #ff6b5e;
+  --gold2: #e8513f;
+  --coin: #ffd166;
+  --green: #12a37f;
+  --red: #e63946;
+  --blue: #3a86ff;
+  --purple: #9b5de5;
+  --hero-a: #14b88f;
+  --hero-b: #0b8f6f;
+  --on-hero: #ffffff;
+  --on-accent: #ffffff;
+  --toast: #183a33;
+  --paper-line: color-mix(in srgb, #183a33 25%, #ffffff);
+  --paper-muted: color-mix(in srgb, #183a33 45%, #ffffff);
+  color-scheme: light;
+}
+:root[data-style='game'][data-palette='bubblegum'] {
+  --bg: #ffeaf4;
+  --bg2: #ffffff;
+  --card: #ffffff;
+  --card2: #fff4f9;
+  --line: #3d1840;
+  --text: #3d1840;
+  --muted: #87607f;
+  --gold: #ff3d8b;
+  --gold2: #e0206f;
+  --coin: #ffd23f;
+  --green: #1db97a;
+  --red: #ff4757;
+  --blue: #4d7cff;
+  --purple: #8a4dff;
+  --hero-a: #ff62a5;
+  --hero-b: #c2297d;
+  --on-hero: #ffffff;
+  --on-accent: #ffffff;
+  --toast: #3d1840;
+  --paper-line: color-mix(in srgb, #3d1840 25%, #ffffff);
+  --paper-muted: color-mix(in srgb, #3d1840 45%, #ffffff);
+  color-scheme: light;
+}
+:root[data-style='game'][data-palette='midnight'] {
+  --bg: #141128;
+  --bg2: #221d42;
+  --card: #221d42;
+  --card2: #2a2450;
+  --line: #05040d;
+  --text: #f3f0ff;
+  --muted: #a7a1d0;
+  --gold: #ff3d8b;
+  --gold2: #ff62a5;
+  --coin: #ffd23f;
+  --green: #2ee68f;
+  --red: #ff5a6e;
+  --blue: #4cc9f0;
+  --purple: #ff9f1c;
+  --hero-a: #5a35f0;
+  --hero-b: #ff3d8b;
+  --on-hero: #ffffff;
+  --on-accent: #ffffff;
+  --toast: #2a2450;
+  --paper-line: color-mix(in srgb, #05040d 25%, #ffffff);
+  --paper-muted: color-mix(in srgb, #05040d 45%, #ffffff);
+  color-scheme: dark;
+}
+:root[data-style='game'][data-palette='neon'] {
+  --bg: #0d1117;
+  --bg2: #161b26;
+  --card: #161b26;
+  --card2: #1d2433;
+  --line: #000000;
+  --text: #eef6ff;
+  --muted: #93a4bd;
+  --gold: #00e5a8;
+  --gold2: #00c48f;
+  --coin: #ffe14d;
+  --green: #00e5a8;
+  --red: #ff4d6d;
+  --blue: #3db8ff;
+  --purple: #c77dff;
+  --hero-a: #0f9d80;
+  --hero-b: #1d4ed8;
+  --on-hero: #ffffff;
+  --on-accent: #06231b;
+  --toast: #1d2433;
+  --paper-line: color-mix(in srgb, #000000 25%, #ffffff);
+  --paper-muted: color-mix(in srgb, #000000 45%, #ffffff);
+  color-scheme: dark;
+}
+[data-style='game']:is([data-palette='midnight'], [data-palette='neon']) :is(.card, .qfield, .hero-card, .stat, .scene, .badge, .remix-left, .btn, .chip, .stepper button, .toast, .sp-page) {
+  border-color: color-mix(in srgb, var(--text) 30%, transparent);
+}
+[data-style='game']:is([data-palette='midnight'], [data-palette='neon']) .chip.on,
+[data-style='game']:is([data-palette='midnight'], [data-palette='neon']) .btn.next {
+  color: #15122b;
+}
+[data-style='game']:is([data-palette='midnight'], [data-palette='neon']) .cb-node.on .cb-num {
+  fill: #15122b;
+}
+[data-style='game']:is([data-palette='midnight'], [data-palette='neon']) .cb-node circle {
+  stroke: color-mix(in srgb, var(--text) 45%, transparent);
+}
+[data-style='game']:is([data-palette='midnight'], [data-palette='neon']) .topbar,
+[data-style='game']:is([data-palette='midnight'], [data-palette='neon']) .bottomnav {
+  border-color: color-mix(in srgb, var(--text) 18%, transparent);
+}
+
+.look-bar button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.dot-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex: none;
 }
