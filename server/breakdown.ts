@@ -75,8 +75,8 @@ export class HttpError extends Error {
 }
 
 async function checkAuth(authHeader: string | null) {
-  const url = process.env.VITE_SUPABASE_URL
-  const key = process.env.VITE_SUPABASE_ANON_KEY
+  const url = process.env.VITE_SUPABASE_URL || 'https://fxxdtoymllkxjzpldigu.supabase.co'
+  const key = process.env.VITE_SUPABASE_ANON_KEY || 'sb_publishable_-rarHu126YOn1B0xeC4z2A_ip5sqont'
   // When sync is configured, only signed-in users may spend API credits.
   if (!url || !key) return
   const token = authHeader?.replace(/^Bearer\s+/i, '')
