@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { go, href } from '../lib/router'
 import { displayTitle } from '../lib/project'
 import { DEMO, emptySource, fetchBreakdown, remixProgress } from '../lib/remix'
-import { accessToken, createRemixProject, useStore } from '../lib/store'
+import { createRemixProject, useStore } from '../lib/store'
 import type { Kind, Source } from '../lib/types'
 import { Bar } from './ui'
 
@@ -21,7 +21,7 @@ export function RemixStart() {
     setNotFound(null)
     setBusy(true)
     try {
-      const src = await fetchBreakdown(title.trim(), kind, await accessToken())
+      const src = await fetchBreakdown(title.trim(), kind)
       if (!src.found) setNotFound(src)
       else {
         const id = createRemixProject(src, true, src.kind)

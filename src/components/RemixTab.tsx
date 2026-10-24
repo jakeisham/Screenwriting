@@ -3,7 +3,7 @@ import { GENRES } from '../lib/framework'
 import { href } from '../lib/router'
 import { isLoglineDone } from '../lib/project'
 import { fetchBreakdown, getRight, remixProgress, rowDone, rows, SECTIONS, setLeft, setRight, type Row, type SectionKey } from '../lib/remix'
-import { accessToken, updateProject } from '../lib/store'
+import { updateProject } from '../lib/store'
 import type { Kind, Project, RemixExtra, TvFormat } from '../lib/types'
 import { filled, fmtDate, uid } from '../lib/util'
 import { AutoTextarea, Bar, GenrePicker } from './ui'
@@ -22,7 +22,7 @@ export function RemixTab({ p }: { p: Project }) {
     if (!confirm('Replace the left column with a fresh breakdown? Your right column stays, but rows matched by position may shift.')) return
     setRerun(true)
     try {
-      const fresh = await fetchBreakdown(src.title, src.kind, await accessToken())
+      const fresh = await fetchBreakdown(src.title, src.kind)
       if (!fresh.found) alert(fresh.message || 'Claude couldn’t identify that title.')
       else set((x) => ({ ...x, remix: { ...x.remix!, source: fresh, fetchedAt: Date.now(), fromClaude: true } }))
     } catch (e) {

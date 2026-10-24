@@ -1,10 +1,9 @@
 import { href } from '../lib/router'
 import { displayTitle } from '../lib/project'
-import { exportBackup, importBackup, purgeProject, signOut, syncNow, trashProject, updateSettings, useStore } from '../lib/store'
+import { exportBackup, importBackup, purgeProject, syncNow, trashProject, updateSettings, useStore } from '../lib/store'
 import { syncConfigured } from '../lib/supabase'
 import { ago, dateKey } from '../lib/util'
 import { LookPicker } from './LookPicker'
-import { SignIn } from './SignIn'
 import { download, pickFile } from './ui'
 
 export function Account() {
@@ -25,27 +24,20 @@ export function Account() {
               Until then, use Backup below to move your work between devices.
             </p>
           </>
-        ) : s.user ? (
+        ) : (
           <>
             <p>
-              Signed in as <b>{s.user.email}</b>
+              Signed in as <b>{s.owner}</b> on every device. Your writing syncs automatically.
             </p>
             <p className="muted small">
               Status: <span className={`sync-dot ${s.sync}`} /> {s.sync}
               {s.lastSync ? ` · last synced ${ago(s.lastSync)}` : ''}
               {s.syncError && <span className="error"> · {s.syncError}</span>}
             </p>
-            <div className="row gap">
-              <button className="btn" onClick={() => void syncNow()}>
-                Sync now
-              </button>
-              <button className="btn ghost" onClick={() => void signOut()}>
-                Sign out
-              </button>
-            </div>
+            <button className="btn" onClick={() => void syncNow()}>
+              Sync now
+            </button>
           </>
-        ) : (
-          <SignIn />
         )}
       </div>
 

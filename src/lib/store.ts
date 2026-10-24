@@ -2,8 +2,7 @@
 // then synced to Supabase when signed in. Conflicts: last edit wins, per item.
 import { useSyncExternalStore } from 'react'
 import { createStore, entries, setMany } from 'idb-keyval'
-import type { User } from '@supabase/supabase-js'
-import { supabase } from './supabase'
+import { OWNER_NAME, supabase } from './supabase'
 import { filledSteps, isLoglineDone, isOutlineDone, newProject, normalize, projectWords, scriptPages } from './project'
 import { newRemix } from './remix'
 import type { Activity, Item, Kind, Project, Settings, Source, TvFormat } from './types'
@@ -35,7 +34,8 @@ export interface State {
   trash: Project[]
   activity: Activity[]
   settings: Settings
-  user: User | null
+  // Single-owner mode: every device is signed in as the owner.
+  owner: string | null
   sync: SyncStatus
   syncError: string
   lastSync: number
@@ -48,8 +48,8 @@ let state: State = {
   trash: [],
   activity: [],
   settings: DEFAULT_SETTINGS,
-  user: null,
-  sync: supabase ? 'signed-out' : 'local',
+  owner: null,
+  sync: supabase ? 'syncing' : 'local',
   syncError: '',
   lastSync: 0,
 }
@@ -161,12 +161,6 @@ export function createRemixProject(source: Source, fromClaude: boolean, kind: Ki
   return p.id
 }
 
-export async function accessToken() {
-  if (!supabase) return undefined
-  const { data } = await supabase.auth.getSession()
-  return data.session?.access_token
-}
-
 export function getProject(id: string) {
   const it = items.get(id)
   if (!it || it.type !== 'project' || (it.data as { purged?: boolean }).purged) return undefined
@@ -270,7 +264,7 @@ let syncing = false
 let again = false
 
 function schedulePush() {
-  if (!supabase || !state.user) return
+  if (!supabase || !state.owner) return
   clearTimeout(pushTimer)
   pushTimer = setTimeout(() => void syncNow(), 1500)
 }
@@ -280,10 +274,10 @@ function setSync(sync: SyncStatus, syncError = '') {
   emit()
 }
 
-const pullKey = () => `wr-lastpull:${state.user?.id}`
+const pullKey = () => 'wr-lastpull:owner'
 
 export async function syncNow() {
-  if (!supabase || !state.user) return
+  if (!supabase || !state.owner) return
   if (syncing) {
     again = true
     return
@@ -358,29 +352,6 @@ export async function syncNow() {
   }
 }
 
-export async function signIn(email: string, password: string) {
-  if (!supabase) throw new Error('Sync is not configured')
-  const { error } = await supabase.auth.signInWithPassword({ email, password })
-  if (error) throw error
-  try {
-    localStorage.setItem('wr-email', email)
-  } catch {
-    /* storage unavailable */
-  }
-}
-
-export function rememberedEmail() {
-  try {
-    return localStorage.getItem('wr-email') ?? ''
-  } catch {
-    return ''
-  }
-}
-
-export async function signOut() {
-  await supabase?.auth.signOut()
-}
-
 // ---- boot ----
 export async function init() {
   let all: [string, Item][] = []
@@ -397,23 +368,18 @@ export async function init() {
   rebuild()
 
   if (supabase) {
-    const onUser = (user: User | null) => {
-      const prev = state.user?.id
-      state = { ...state, user, sync: user ? state.sync : 'signed-out' }
-      emit()
-      if (user && user.id !== prev) {
-        // First sync for this account on this device: upload everything local.
-        const flag = `wr-uploaded:${user.id}`
-        if (!localStorage.getItem(flag)) {
-          items.forEach((it) => items.set(it.id, { ...it, dirty: true }))
-          localStorage.setItem(flag, '1')
-        }
-        void syncNow()
+    state = { ...state, owner: OWNER_NAME }
+    emit()
+    // First sync on this device: upload everything already written here.
+    try {
+      if (!localStorage.getItem('wr-uploaded:owner')) {
+        items.forEach((it) => items.set(it.id, { ...it, dirty: true }))
+        localStorage.setItem('wr-uploaded:owner', '1')
       }
+    } catch {
+      /* storage unavailable */
     }
-    const { data } = await supabase.auth.getSession()
-    onUser(data.session?.user ?? null)
-    supabase.auth.onAuthStateChange((_e, session) => onUser(session?.user ?? null))
+    void syncNow()
     window.addEventListener('online', () => void syncNow())
     window.addEventListener('focus', () => void syncNow())
     setInterval(() => document.visibilityState === 'visible' && void syncNow(), 60_000)

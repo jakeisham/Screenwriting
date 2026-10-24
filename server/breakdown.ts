@@ -2,7 +2,6 @@
 // Claude describes the original work only. It never suggests ideas for the writer's version.
 import Anthropic from '@anthropic-ai/sdk'
 import { betaZodOutputFormat } from '@anthropic-ai/sdk/helpers/beta/zod'
-import { createClient } from '@supabase/supabase-js'
 import { z } from 'zod'
 
 const Named = z.object({ name: z.string(), description: z.string() })
@@ -74,20 +73,30 @@ export class HttpError extends Error {
   }
 }
 
-async function checkAuth(authHeader: string | null) {
-  const url = process.env.VITE_SUPABASE_URL || 'https://fxxdtoymllkxjzpldigu.supabase.co'
-  const key = process.env.VITE_SUPABASE_ANON_KEY || 'sb_publishable_-rarHu126YOn1B0xeC4z2A_ip5sqont'
-  // When sync is configured, only signed-in users may spend API credits.
-  if (!url || !key) return
-  const token = authHeader?.replace(/^Bearer\s+/i, '')
-  if (!token) throw new HttpError(401, 'Sign in (Account tab) to use Remix breakdowns.')
-  const { data, error } = await createClient(url, key).auth.getUser(token)
-  if (error || !data.user) throw new HttpError(401, 'Your sign-in expired. Sign in again on the Account tab.')
+// No sign-in in this single-owner app, so only accept requests made from the app's own pages.
+// (A browser always sends Origin on a cross-site POST, so other websites can't call this.)
+function checkOrigin(origin: string | null, referer: string | null) {
+  const src = origin || referer
+  if (!src) throw new HttpError(403, 'Requests must come from the Writers’ Room app.')
+  let host = ''
+  try {
+    host = new URL(src).hostname
+  } catch {
+    throw new HttpError(403, 'Requests must come from the Writers’ Room app.')
+  }
+  const allowed =
+    host === 'localhost' ||
+    host === '127.0.0.1' ||
+    host === 'screenwriting-blond.vercel.app' ||
+    /^screenwriting-[a-z0-9-]+-jakeishams-projects\.vercel\.app$/.test(host) ||
+    host === 'screenwriting-jakeishams-projects.vercel.app' ||
+    (process.env.ALLOWED_HOST ?? '') === host
+  if (!allowed) throw new HttpError(403, 'Requests must come from the Writers’ Room app.')
 }
 
-export async function breakdown(body: unknown, authHeader: string | null): Promise<Source> {
+export async function breakdown(body: unknown, origin: string | null, referer: string | null): Promise<Source> {
   if (!process.env.ANTHROPIC_API_KEY) throw new HttpError(503, 'ANTHROPIC_API_KEY is not set on the server. See README → Remix.')
-  await checkAuth(authHeader)
+  checkOrigin(origin, referer)
 
   const { title, kind } = (body ?? {}) as { title?: string; kind?: string }
   const t = (title ?? '').trim().slice(0, 200)
@@ -121,7 +130,7 @@ export async function breakdown(body: unknown, authHeader: string | null): Promi
 export async function handle(req: Request): Promise<Response> {
   if (req.method !== 'POST') return Response.json({ error: 'POST only' }, { status: 405 })
   try {
-    const data = await breakdown(await req.json().catch(() => ({})), req.headers.get('authorization'))
+    const data = await breakdown(await req.json().catch(() => ({})), req.headers.get('origin'), req.headers.get('referer'))
     return Response.json(data)
   } catch (e) {
     const status = e instanceof HttpError ? e.status : 500

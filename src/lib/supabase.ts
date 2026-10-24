@@ -8,7 +8,10 @@ const key = (import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined) || 's
 
 export const supabase: SupabaseClient | null =
   !import.meta.env.VITE_DEMO && url && key
-    ? createClient(url, key, { auth: { persistSession: true, detectSessionInUrl: true } })
+    ? createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false } })
     : null
 
 export const syncConfigured = !!supabase
+
+// Single-owner app: no sign-in, every device syncs as this person.
+export const OWNER_NAME = 'Jake Isham'

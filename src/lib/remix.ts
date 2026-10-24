@@ -172,7 +172,7 @@ export function newRemix(source: Source, fromClaude: boolean): Remix {
 
 export const DEMO = !!import.meta.env.VITE_DEMO
 
-export async function fetchBreakdown(title: string, kind: Kind | '', token?: string): Promise<Source> {
+export async function fetchBreakdown(title: string, kind: Kind | ''): Promise<Source> {
   if (DEMO) {
     const { DEMO_SOURCE } = await import('./demoSource')
     await new Promise((r) => setTimeout(r, 1200))
@@ -180,7 +180,7 @@ export async function fetchBreakdown(title: string, kind: Kind | '', token?: str
   }
   const res = await fetch('/api/breakdown', {
     method: 'POST',
-    headers: { 'content-type': 'application/json', ...(token ? { authorization: `Bearer ${token}` } : {}) },
+    headers: { 'content-type': 'application/json' },
     body: JSON.stringify({ title, kind }),
   })
   const data = await res.json().catch(() => null)
