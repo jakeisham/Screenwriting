@@ -358,13 +358,23 @@ export async function syncNow() {
   }
 }
 
-export async function signIn(email: string) {
+export async function signIn(email: string, password: string) {
   if (!supabase) throw new Error('Sync is not configured')
-  const { error } = await supabase.auth.signInWithOtp({
-    email,
-    options: { emailRedirectTo: window.location.origin },
-  })
+  const { error } = await supabase.auth.signInWithPassword({ email, password })
   if (error) throw error
+  try {
+    localStorage.setItem('wr-email', email)
+  } catch {
+    /* storage unavailable */
+  }
+}
+
+export function rememberedEmail() {
+  try {
+    return localStorage.getItem('wr-email') ?? ''
+  } catch {
+    return ''
+  }
 }
 
 export async function signOut() {

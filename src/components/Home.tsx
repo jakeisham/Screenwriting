@@ -5,6 +5,8 @@ import { computeStats } from '../lib/stats'
 import { useStore } from '../lib/store'
 import { ago, weekStart } from '../lib/util'
 import { Pips } from './Pips'
+import { SignIn } from './SignIn'
+import { syncConfigured } from '../lib/supabase'
 import { Bar, Ring } from './ui'
 
 export function Home() {
@@ -19,6 +21,13 @@ export function Home() {
 
   return (
     <div className="stack">
+      {syncConfigured && s.ready && !s.user && (
+        <div className="card">
+          <div className="eyebrow">Sign in on this device</div>
+          <p className="small muted">Sign in once and your ideas sync across your phone, iPad and computer.</p>
+          <SignIn />
+        </div>
+      )}
       <div className="hero-card">
         <div className="row between wrap gap">
           <div>

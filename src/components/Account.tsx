@@ -1,28 +1,14 @@
-import { useState } from 'react'
 import { href } from '../lib/router'
 import { displayTitle } from '../lib/project'
-import { exportBackup, importBackup, purgeProject, signIn, signOut, syncNow, trashProject, updateSettings, useStore } from '../lib/store'
+import { exportBackup, importBackup, purgeProject, signOut, syncNow, trashProject, updateSettings, useStore } from '../lib/store'
 import { syncConfigured } from '../lib/supabase'
 import { ago, dateKey } from '../lib/util'
 import { LookPicker } from './LookPicker'
+import { SignIn } from './SignIn'
 import { download, pickFile } from './ui'
 
 export function Account() {
   const s = useStore()
-  const [email, setEmail] = useState('')
-  const [sent, setSent] = useState(false)
-  const [err, setErr] = useState('')
-
-  const send = async () => {
-    setErr('')
-    try {
-      await signIn(email.trim())
-      setSent(true)
-    } catch (e) {
-      setErr(e instanceof Error ? e.message : String(e))
-    }
-  }
-
   return (
     <div className="stack">
       <h1>Account</h1>
@@ -58,21 +44,8 @@ export function Account() {
               </button>
             </div>
           </>
-        ) : sent ? (
-          <p>
-            Check <b>{email}</b> for a sign-in link. Open it on this device. Your work so far stays here and uploads once you’re in.
-          </p>
         ) : (
-          <>
-            <p className="muted small">Sign in with your email — no password. You’ll get a magic link. Do this once on each device.</p>
-            <div className="row gap">
-              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" className="grow" />
-              <button className="btn" disabled={!email.includes('@')} onClick={send}>
-                Send link
-              </button>
-            </div>
-            {err && <p className="error small">{err}</p>}
-          </>
+          <SignIn />
         )}
       </div>
 
