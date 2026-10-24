@@ -5,7 +5,8 @@ import { createStore, entries, setMany } from 'idb-keyval'
 import type { User } from '@supabase/supabase-js'
 import { supabase } from './supabase'
 import { filledSteps, isLoglineDone, isOutlineDone, newProject, normalize, projectWords, scriptPages } from './project'
-import type { Activity, Item, Kind, Project, Settings, TvFormat } from './types'
+import { newRemix } from './remix'
+import type { Activity, Item, Kind, Project, Settings, Source, TvFormat } from './types'
 import { dateKey, uid } from './util'
 
 const idb = createStore('writers-room', 'items')
@@ -146,6 +147,19 @@ export function createProject(kind: Kind, tvFormat: TvFormat = 'half') {
   save(p.id, 'project', p)
   rebuild()
   return p.id
+}
+
+export function createRemixProject(source: Source, fromClaude: boolean, kind: Kind, tvFormat: TvFormat = 'half') {
+  const p = { ...newProject(kind, tvFormat), remix: newRemix(source, fromClaude) }
+  save(p.id, 'project', p)
+  rebuild()
+  return p.id
+}
+
+export async function accessToken() {
+  if (!supabase) return undefined
+  const { data } = await supabase.auth.getSession()
+  return data.session?.access_token
 }
 
 export function getProject(id: string) {

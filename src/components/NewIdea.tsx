@@ -27,6 +27,11 @@ export function NewIdea({ kind }: { kind?: Kind }) {
             <div className="muted small">Pilot + engine + season circle</div>
           </a>
         </div>
+        <a className="card pick remix-pick" href={href('remix')}>
+          <div className="pick-icon">🔁</div>
+          <div className="big">Remix an existing movie or show</div>
+          <div className="muted small">Break down something you know, then turn it into a new genre. Film or TV.</div>
+        </a>
       </div>
     )
   }

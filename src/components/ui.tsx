@@ -130,3 +130,32 @@ export function pickFile(accept: string): Promise<string | null> {
     input.click()
   })
 }
+
+export function GenrePicker({ value, onChange, genres }: { value: string; onChange: (g: string) => void; genres: string[] }) {
+  const [open, setOpen] = useState(!value)
+  if (value && !open)
+    return (
+      <div className="chips">
+        <button className="chip on">{value}</button>
+        <button className="link small" onClick={() => setOpen(true)}>
+          change genre
+        </button>
+      </div>
+    )
+  return (
+    <div className="chips">
+      {genres.map((g) => (
+        <button
+          key={g}
+          className={`chip ${value === g ? 'on' : ''}`}
+          onClick={() => {
+            onChange(value === g ? '' : g)
+            if (value !== g) setOpen(false)
+          }}
+        >
+          {g}
+        </button>
+      ))}
+    </div>
+  )
+}

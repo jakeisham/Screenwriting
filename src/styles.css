@@ -1534,3 +1534,118 @@ button {
     text-transform: uppercase;
   }
 }
+
+/* ---------- remix ---------- */
+.remix-pick {
+  margin-top: 0;
+}
+.remix-title {
+  font-size: 1.15rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px;
+  margin: 2px 0 8px;
+}
+.remix-title .arrow {
+  color: var(--gold);
+  font-weight: 800;
+}
+.section-nav {
+  position: sticky;
+  top: calc(env(safe-area-inset-top) + 56px);
+  z-index: 5;
+  background: var(--bg);
+  padding: 6px 0;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.section-nav .chip {
+  white-space: nowrap;
+}
+.remix-head-row,
+.remix-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.remix-head-row {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--muted);
+  font-weight: 650;
+  padding: 0 16px;
+}
+.remix-head-row > div:last-child {
+  color: var(--gold);
+}
+.remix-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 12px 0;
+}
+.remix-row {
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+}
+.remix-row:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+.remix-left {
+  background: var(--bg2);
+  border: 1px dashed var(--line);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 0.9rem;
+}
+.remix-left.new {
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+.remix-label {
+  font-weight: 700;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+.remix-src {
+  color: var(--muted);
+  white-space: pre-wrap;
+  cursor: text;
+}
+.remix-right {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.remix-right .question {
+  font-size: 0.9rem;
+}
+.remix-row.skipped .remix-left {
+  opacity: 0.4;
+  text-decoration: line-through;
+}
+@media (max-width: 720px) {
+  .remix-head-row {
+    display: none;
+  }
+  .remix-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .remix-left::before {
+    content: 'ORIGINAL';
+    display: block;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 2px;
+  }
+}

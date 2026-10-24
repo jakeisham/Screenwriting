@@ -7,10 +7,12 @@ import { ago } from '../lib/util'
 import { BudgetTab } from './BudgetTab'
 import { OutlineTab } from './OutlineTab'
 import { PitchTab } from './PitchTab'
+import { RemixTab } from './RemixTab'
 import { ScriptTab } from './ScriptTab'
 import { TvTab } from './TvTab'
 
 const TABS = [
+  { key: 'remix', label: 'Remix', remixOnly: true },
   { key: 'pitch', label: 'Logline' },
   { key: 'outline', label: 'Outline' },
   { key: 'tv', label: 'Series', tvOnly: true },
@@ -37,7 +39,7 @@ export function ProjectPage({ id, tab = 'pitch', focus }: { id: string; tab?: st
     )
   }
 
-  const tabs = TABS.filter((t) => !t.tvOnly || p.kind === 'tv')
+  const tabs = TABS.filter((t) => (!t.tvOnly || p.kind === 'tv') && (!t.remixOnly || p.remix))
   const ns = nextStep(p)
   const st = stage(p)
 
@@ -48,7 +50,8 @@ export function ProjectPage({ id, tab = 'pitch', focus }: { id: string; tab?: st
           <div>
             <div className="eyebrow">
               {p.kind === 'film' ? 'Film' : `TV · ${p.tvFormat === 'half' ? 'half-hour' : 'hour'}`}
-              {p.genre && ` · ${p.genre}`} · <span className={`stage s-${st}`}>{STAGE_LABEL[st]}</span>
+              {p.genre && ` · ${p.genre}`}
+              {p.remix && ` · Remix of ${p.remix.source.title || '?'}`} · <span className={`stage s-${st}`}>{STAGE_LABEL[st]}</span>
             </div>
             <h1>{displayTitle(p)}</h1>
           </div>
@@ -76,6 +79,7 @@ export function ProjectPage({ id, tab = 'pitch', focus }: { id: string; tab?: st
         </div>
       )}
 
+      {tab === 'remix' && p.remix && <RemixTab p={p} />}
       {tab === 'pitch' && <PitchTab p={p} />}
       {tab === 'outline' && <OutlineTab key={focus} p={p} initialBeat={focus as BeatKey | undefined} />}
       {tab === 'tv' && p.kind === 'tv' && <TvTab p={p} />}

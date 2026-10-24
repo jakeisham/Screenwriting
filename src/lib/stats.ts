@@ -177,6 +177,8 @@ export function computeStats(projects: Project[], activity: Activity[], settings
     b('four-circles', '◎', 'Four Circles', 'Complete 4 outlines', outlines >= 4),
     b('engine', '⚙', 'Engine Room', 'Define a TV series engine', projects.some((p) => p.kind === 'tv' && p.engine.trim())),
     b('both-worlds', '⇄', 'Both Worlds', 'A finished logline for film AND TV', kinds.size === 2),
+    b('genre-bender', '🔁', 'Genre Bender', 'Finish the logline of a remix', projects.some((p) => p.remix && p.loglineDoneAt)),
+    b('mashup', '🌀', 'Mashup Artist', 'Finish 5 remix loglines', projects.filter((p) => p.remix && p.loglineDoneAt).length >= 5),
     b('fade-out', '🎬', 'Fade Out', 'Finish your first screenplay', scripts >= 1),
     b('words-1k', 'Ⅰ', '1,000 Words', 'Write 1,000 words', totals.words >= 1000),
     b('words-10k', 'Ⅹ', '10,000 Words', 'Write 10,000 words', totals.words >= 10000),

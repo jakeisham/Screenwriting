@@ -58,6 +58,9 @@ export function Home() {
           📺 New TV idea
         </a>
       </div>
+      <a className="btn ghost big-btn" href={href('remix')}>
+        🔁 Remix a movie or show into a new genre
+      </a>
 
       {cont && (
         <a className="card continue" href={href(`p/${cont.id}/${contStep?.tab ?? 'pitch'}${contStep?.focus ? `/${contStep.focus}` : ''}`)}>

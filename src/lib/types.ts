@@ -79,6 +79,7 @@ export interface Project {
   outlineDoneAt?: number
   scriptDoneAt?: number
   createdAt: number
+  remix?: Remix
 }
 
 export interface Activity {
@@ -104,4 +105,60 @@ export interface Item<T = unknown> {
   updatedAt: number
   deleted: boolean
   dirty?: boolean
+}
+
+// ---- Remix: a factual breakdown of an existing work (left column) ----
+export interface SourceNamed {
+  name: string
+  description: string
+}
+
+export interface SourceCharacter {
+  name: string
+  role: string
+  description: string
+  want: string
+  flaw: string
+}
+
+export interface Source {
+  found: boolean
+  message: string
+  title: string
+  year: string
+  kind: Kind
+  genre: string
+  tone: string
+  logline: string
+  theme: string
+  world: string
+  worldRules: string
+  hero: string
+  heroWant: string
+  obstacle: string
+  characters: SourceCharacter[]
+  beats: Beats
+  engine: string
+  setPieces: SourceNamed[]
+  locations: SourceNamed[]
+  objects: SourceNamed[]
+  notable: { label: string; text: string }[]
+}
+
+export interface RemixExtra {
+  id: string
+  section: string
+  label: string
+  text: string
+}
+
+export interface Remix {
+  source: Source
+  fetchedAt: number
+  fromClaude: boolean
+  // The writer's right column for rows that don't map to a normal pitch field.
+  notes: Record<string, string>
+  // Rows the writer chose to drop from their version.
+  skipped: Record<string, boolean>
+  extras: RemixExtra[]
 }

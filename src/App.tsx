@@ -5,6 +5,7 @@ import { Library } from './components/Library'
 import { NewIdea } from './components/NewIdea'
 import { Progress } from './components/Progress'
 import { ProjectPage } from './components/ProjectPage'
+import { RemixStart } from './components/RemixStart'
 import { Rules } from './components/Rules'
 import { href, useRoute } from './lib/router'
 import { computeStats } from './lib/stats'
@@ -35,9 +36,10 @@ export default function App() {
   else if (head === 'progress') page = <Progress />
   else if (head === 'account') page = <Account />
   else if (head === 'rules') page = <Rules />
+  else if (head === 'remix') page = <RemixStart />
   else page = <Home />
 
-  const navKey = head === 'p' ? 'ideas' : head ?? ''
+  const navKey = head === 'p' ? 'ideas' : head === 'remix' ? 'new' : head ?? ''
 
   return (
     <div className="app">

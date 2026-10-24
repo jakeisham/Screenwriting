@@ -41,6 +41,9 @@ export function normalize(p: Partial<Project>): Project {
     ...p,
     beats: { ...base.beats, ...(p.beats ?? {}) },
     seasonBeats: { ...base.seasonBeats, ...(p.seasonBeats ?? {}) },
+    remix: p.remix
+      ? { ...p.remix, notes: p.remix.notes ?? {}, skipped: p.remix.skipped ?? {}, extras: p.remix.extras ?? [] }
+      : undefined,
   } as Project
 }
 
@@ -138,6 +141,11 @@ export function projectWords(p: Project) {
     add(e.logline)
     BEAT_KEYS.forEach((k) => add(e.beats[k]))
   })
+  // Remix: only the writer's right column counts — never the source breakdown.
+  if (p.remix) {
+    Object.values(p.remix.notes).forEach(add)
+    p.remix.extras.forEach((x) => [x.label, x.text].forEach(add))
+  }
   return n
 }
 
@@ -159,6 +167,10 @@ export function filledSteps(p: Project): string[] {
     if (filled(e.logline)) keys.push(`ep:${e.id}:logline`)
     BEAT_KEYS.forEach((k) => filled(e.beats[k]) && keys.push(`ep:${e.id}:${k}`))
   })
+  if (p.remix) {
+    Object.entries(p.remix.notes).forEach(([k, v]) => filled(v) && keys.push(`remix:${k}`))
+    p.remix.extras.forEach((x) => filled(x.label) && filled(x.text) && keys.push(`remix:extra:${x.id}`))
+  }
   return keys
 }
 

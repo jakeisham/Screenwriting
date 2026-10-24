@@ -3,7 +3,7 @@ import { isLoglineDone, loglineParts } from '../lib/project'
 import { updateProject } from '../lib/store'
 import type { Project } from '../lib/types'
 import { filled, fmtDate } from '../lib/util'
-import { AutoTextarea, QuestionField } from './ui'
+import { AutoTextarea, GenrePicker, QuestionField } from './ui'
 
 export function PitchTab({ p }: { p: Project }) {
   const set = (patch: Partial<Project>) => updateProject(p.id, (x) => ({ ...x, ...patch }))
@@ -48,13 +48,7 @@ export function PitchTab({ p }: { p: Project }) {
           <span className="qlabel">Genre</span>
         </div>
         <div className="question">Pick one genre and stick to it. Which one is this?</div>
-        <div className="chips">
-          {GENRES.map((g) => (
-            <button key={g} className={`chip ${p.genre === g ? 'on' : ''}`} onClick={() => set({ genre: p.genre === g ? '' : g })}>
-              {g}
-            </button>
-          ))}
-        </div>
+        <GenrePicker value={p.genre} genres={GENRES} onChange={(g) => set({ genre: g })} />
         {p.genre && (
           <div className="hint">
             {LOW_BUDGET_GENRES.includes(p.genre)

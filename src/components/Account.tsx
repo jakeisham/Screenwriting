@@ -133,7 +133,7 @@ export function Account() {
       <div className="card">
         <div className="eyebrow">The house rule</div>
         <p className="small">
-          This app never writes for you. Every idea, line and beat is yours. It only organizes your words, asks questions, counts, and keeps score.
+          This app never writes for you. Every idea, line and beat is yours. It only organizes your words, asks questions, counts, and keeps score. The one exception is Remix: Claude fills in the left column with facts about the original movie or show, and never anything for your version.
         </p>
         <a className="link small" href={href('rules')}>
           The framework: Harmon · Campbell · Simens →
