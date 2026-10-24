@@ -4,6 +4,7 @@ import { displayTitle } from '../lib/project'
 import { exportBackup, importBackup, purgeProject, signIn, signOut, syncNow, trashProject, updateSettings, useStore } from '../lib/store'
 import { syncConfigured } from '../lib/supabase'
 import { ago, dateKey } from '../lib/util'
+import { LookPicker } from './LookPicker'
 import { download, pickFile } from './ui'
 
 export function Account() {
@@ -73,6 +74,11 @@ export function Account() {
             {err && <p className="error small">{err}</p>}
           </>
         )}
+      </div>
+
+      <div className="card">
+        <div className="eyebrow">Look</div>
+        <LookPicker />
       </div>
 
       <div className="card">

@@ -6,6 +6,7 @@ import { NewIdea } from './components/NewIdea'
 import { Progress } from './components/Progress'
 import { ProjectPage } from './components/ProjectPage'
 import { RemixStart } from './components/RemixStart'
+import { LookBar } from './components/LookPicker'
 import { Rules } from './components/Rules'
 import { href, useRoute } from './lib/router'
 import { computeStats } from './lib/stats'
@@ -66,6 +67,7 @@ export default function App() {
         ))}
       </nav>
       <Toasts />
+      {import.meta.env.VITE_DEMO && <LookBar />}
     </div>
   )
 }

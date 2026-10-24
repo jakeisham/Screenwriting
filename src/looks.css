@@ -1,0 +1,465 @@
+/* ===================================================================
+   LOOK 1 · "Revision Pages"
+   A script on a desk: cool white paper, typewriter headings, and the
+   industry's colored revision pages (blue, pink, yellow, green) as the
+   stage colors. Flat, hairline rules, almost no rounding.
+   =================================================================== */
+:root[data-style='paper'] {
+  --bg: #eceee9;
+  --bg2: #f5f6f2;
+  --card: #ffffff;
+  --card2: #f0f1ec;
+  --line: #d3d6ce;
+  --text: #1c1f23;
+  --muted: #676c66;
+  --gold: #2c55c9; /* revision blue: the accent */
+  --gold2: #1f43a8;
+  --green: #2f8a4c; /* green pages */
+  --red: #c93c5c; /* pink pages */
+  --blue: #4f7ad8;
+  --purple: #b0882a; /* goldenrod pages */
+  --on-accent: #ffffff;
+  --on-green: #ffffff;
+  --paper: #ffffff;
+  --ink: #111111;
+  --paper-line: #d3d6ce;
+  --paper-muted: #9aa097;
+  --toast: #1c1f23;
+  --radius: 3px;
+  --btn-radius: 3px;
+  --sans: 'Libre Franklin', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+  --display: 'Courier Prime', 'Courier New', Courier, monospace;
+  color-scheme: light;
+}
+[data-style='paper'] h1,
+[data-style='paper'] .level-name,
+[data-style='paper'] .brand {
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+[data-style='paper'] .eyebrow {
+  font-family: var(--display);
+  letter-spacing: 0.06em;
+}
+[data-style='paper'] .hero-card {
+  background: var(--card);
+  border-top: 6px solid var(--gold);
+}
+[data-style='paper'] .banner.won {
+  background: var(--card);
+  border-left: 6px solid var(--green);
+}
+[data-style='paper'] .toast {
+  color: #ffffff;
+  border-color: var(--toast);
+}
+[data-style='paper'] .toast .xp {
+  color: #9db7ff;
+}
+[data-style='paper'] .sp-page {
+  box-shadow: 0 1px 0 var(--line), 0 8px 24px rgba(30, 35, 30, 0.12);
+}
+[data-style='paper'] .cb-node.on .cb-num,
+[data-style='paper'] .chip.on {
+  color: var(--on-accent);
+}
+[data-style='paper'] .ring.complete .ring-fg {
+  stroke: var(--green);
+}
+
+/* ===================================================================
+   LOOK 2 · "The Board"
+   The writers' room wall: a cork board, index cards with the red header
+   rule, pushpins, and marker headings. Warm and hands-on.
+   =================================================================== */
+:root[data-style='board'] {
+  --bg: #b48a5f;
+  --bg2: #fbf7ec;
+  --card: #fffdf6;
+  --card2: #f3ecdb;
+  --line: #e3d8c2;
+  --text: #2a2119;
+  --muted: #7a6b5a;
+  --gold: #d2412b; /* marker red: the accent */
+  --gold2: #b5321e;
+  --green: #2f8f5b;
+  --red: #c0392b;
+  --blue: #2f6db3;
+  --purple: #7b4fb0;
+  --on-accent: #ffffff;
+  --on-green: #ffffff;
+  --paper: #fffdf6;
+  --ink: #1a1a1a;
+  --paper-line: #e3d8c2;
+  --paper-muted: #a39377;
+  --toast: #2a2119;
+  --radius: 4px;
+  --btn-radius: 6px;
+  --sans: 'Nunito Sans', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+  --display: 'Permanent Marker', 'Marker Felt', 'Comic Sans MS', cursive;
+  --display-weight: 400;
+  color-scheme: light;
+}
+[data-style='board'] body {
+  background-color: var(--bg);
+  background-image: radial-gradient(rgba(70, 40, 15, 0.22) 1px, transparent 1.5px),
+    radial-gradient(rgba(255, 235, 200, 0.18) 1px, transparent 1.5px);
+  background-size: 7px 7px, 11px 11px;
+  background-position: 0 0, 3px 5px;
+}
+[data-style='board'] h1,
+[data-style='board'] .level-name,
+[data-style='board'] .big,
+[data-style='board'] .beat-title,
+[data-style='board'] .stat-n,
+[data-style='board'] .flame-n,
+[data-style='board'] .brand {
+  font-weight: 400;
+}
+[data-style='board'] .main > .stack > h1,
+[data-style='board'] .main > .stack > .row h1,
+[data-style='board'] .project-head h1,
+[data-style='board'] .project-head .eyebrow,
+[data-style='board'] .main > .stack > p,
+[data-style='board'] .main > .stack > .link,
+[data-style='board'] .remix-head-row {
+  color: #fffaf0;
+  text-shadow: 0 1px 2px rgba(40, 20, 5, 0.6);
+}
+[data-style='board'] .tabs {
+  border-bottom-color: rgba(255, 250, 240, 0.4);
+}
+[data-style='board'] .tabs a {
+  color: rgba(255, 250, 240, 0.8);
+}
+[data-style='board'] .tabs a.on {
+  color: #fffaf0;
+  border-bottom-color: #fffaf0;
+}
+[data-style='board'] .topbar,
+[data-style='board'] .bottomnav {
+  background: #3a281a;
+  border-color: #2a1c11;
+  color: #fffaf0;
+}
+[data-style='board'] .topnav a,
+[data-style='board'] .bottomnav a {
+  color: #d9c7ad;
+}
+[data-style='board'] .topnav a.on {
+  background: #4d3725;
+  color: #fffaf0;
+}
+[data-style='board'] .bottomnav a.on {
+  color: #ffd27a;
+}
+[data-style='board'] .sync-pill {
+  color: #d9c7ad;
+  border-color: #5a412c;
+}
+[data-style='board'] .card,
+[data-style='board'] .qfield,
+[data-style='board'] .hero-card,
+[data-style='board'] .stat {
+  border: 0;
+  border-top: 3px solid var(--red);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.06), 0 6px 14px rgba(50, 25, 5, 0.35);
+  position: relative;
+}
+[data-style='board'] .card .qfield {
+  border: 0;
+  box-shadow: none;
+}
+[data-style='board'] .hero-card {
+  background: var(--card);
+  transform: rotate(-0.6deg);
+}
+[data-style='board'] .hero-card::after,
+[data-style='board'] .idea-card::after {
+  content: '';
+  position: absolute;
+  top: -9px;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  margin-left: -8px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ff8a75, #c0392b 60%, #7d1f14);
+  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.35);
+}
+[data-style='board'] .idea-card:nth-of-type(odd) {
+  transform: rotate(0.5deg);
+}
+[data-style='board'] .idea-card:nth-of-type(even) {
+  transform: rotate(-0.5deg);
+}
+[data-style='board'] .stat:nth-child(odd) {
+  transform: rotate(-0.8deg);
+}
+[data-style='board'] .stat:nth-child(even) {
+  transform: rotate(0.7deg);
+}
+[data-style='board'] .banner.won {
+  background: var(--card);
+  border-top-color: var(--green);
+}
+[data-style='board'] .toast {
+  color: #fffaf0;
+  border-color: #2a2119;
+}
+[data-style='board'] .toast .xp {
+  color: #ffd27a;
+}
+[data-style='board'] .section-nav,
+[data-style='board'] .sp-toolbar {
+  background: transparent;
+}
+[data-style='board'] .btn.ghost {
+  background: var(--card);
+}
+
+/* ===================================================================
+   LOOK 3 · "Game Night"
+   A bright, chunky game UI: thick outlines, hard drop shadows that press
+   down when tapped, coin-gold XP and a punchy violet. The most "game".
+   =================================================================== */
+:root[data-style='game'] {
+  --bg: #f1efff;
+  --bg2: #ffffff;
+  --card: #ffffff;
+  --card2: #f6f4ff;
+  --line: #24214d;
+  --text: #24214d;
+  --muted: #6c6996;
+  --gold: #6a45ff; /* electric violet: the accent */
+  --gold2: #5a35f0;
+  --green: #18b85a;
+  --red: #ff4d6d;
+  --blue: #2f9bff;
+  --purple: #ff9f1c;
+  --on-accent: #ffffff;
+  --on-green: #ffffff;
+  --paper: #ffffff;
+  --ink: #1b1a33;
+  --paper-line: #c9c6ea;
+  --paper-muted: #9c99c4;
+  --toast: #24214d;
+  --coin: #ffbe0b;
+  --radius: 18px;
+  --btn-radius: 14px;
+  --sans: 'Nunito', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+  --display: 'Lilita One', 'Arial Rounded MT Bold', 'Nunito', sans-serif;
+  --display-weight: 400;
+  color-scheme: light;
+}
+[data-style='game'] h1,
+[data-style='game'] .level-name,
+[data-style='game'] .big,
+[data-style='game'] .beat-title,
+[data-style='game'] .stat-n,
+[data-style='game'] .flame-n,
+[data-style='game'] .brand {
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+[data-style='game'] .card,
+[data-style='game'] .qfield,
+[data-style='game'] .hero-card,
+[data-style='game'] .stat,
+[data-style='game'] .scene,
+[data-style='game'] .badge,
+[data-style='game'] .remix-left {
+  border: 2.5px solid var(--line);
+  box-shadow: 0 5px 0 var(--line);
+}
+[data-style='game'] .card .qfield,
+[data-style='game'] .remix-left {
+  box-shadow: none;
+  border-width: 2px;
+}
+[data-style='game'] .card .qfield {
+  border: 0;
+}
+[data-style='game'] .hero-card {
+  background: linear-gradient(135deg, #7b5bff, #5a35f0);
+  color: #ffffff;
+}
+[data-style='game'] .hero-card .muted,
+[data-style='game'] .hero-card .eyebrow,
+[data-style='game'] .hero-card .flame-l {
+  color: rgba(255, 255, 255, 0.8);
+}
+[data-style='game'] .hero-card .bar {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+[data-style='game'] .bar.gold > div {
+  background: linear-gradient(90deg, var(--coin), #ffd75e);
+}
+[data-style='game'] .btn,
+[data-style='game'] .chip,
+[data-style='game'] .stepper button {
+  border: 2.5px solid var(--line);
+  box-shadow: 0 4px 0 var(--line);
+  font-weight: 800;
+  transition: transform 0.06s, box-shadow 0.06s;
+}
+[data-style='game'] .btn:active,
+[data-style='game'] .chip:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 var(--line);
+}
+[data-style='game'] .chip {
+  background: var(--card);
+}
+[data-style='game'] .chip.on {
+  background: var(--coin);
+  color: var(--line);
+  border-color: var(--line);
+}
+[data-style='game'] .btn.ghost {
+  background: var(--card);
+}
+[data-style='game'] .btn.next {
+  background: var(--coin);
+  color: var(--line);
+}
+[data-style='game'] .topnav a.primary,
+[data-style='game'] .bottomnav a.primary .bn-icon {
+  background: var(--coin);
+  color: var(--line);
+  border: 2.5px solid var(--line);
+}
+[data-style='game'] .ring-fg {
+  stroke: var(--gold);
+  stroke-width: 10;
+}
+[data-style='game'] .ring-bg {
+  stroke: #e3e0ff;
+  stroke-width: 10;
+}
+[data-style='game'] .cb-node.on circle {
+  fill: var(--coin);
+  stroke: var(--line);
+}
+[data-style='game'] .cb-node.on .cb-num {
+  fill: var(--line);
+}
+[data-style='game'] .cb-link {
+  stroke: var(--coin);
+}
+[data-style='game'] .badge.on {
+  background: #fff7d6;
+  border-color: var(--line);
+}
+[data-style='game'] .badge-icon {
+  color: var(--gold);
+}
+[data-style='game'] .toast {
+  color: #ffffff;
+  border: 2.5px solid var(--line);
+  box-shadow: 0 4px 0 var(--line);
+}
+[data-style='game'] .toast.big {
+  background: linear-gradient(135deg, #7b5bff, #5a35f0);
+}
+[data-style='game'] .toast .xp {
+  color: var(--coin);
+}
+[data-style='game'] .banner.won {
+  background: #e7fbef;
+}
+[data-style='game'] .sp-page {
+  border: 2.5px solid var(--line);
+  box-shadow: 0 5px 0 var(--line);
+}
+[data-style='game'] .flame.lit .flame-n {
+  color: var(--coin);
+}
+
+/* ---------- look picker ---------- */
+.look-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+}
+.look {
+  text-align: left;
+  border: 2px solid var(--line);
+  border-radius: 10px;
+  padding: 10px;
+  background: var(--bg2);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.look.on {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px var(--gold);
+}
+.look-swatch {
+  display: flex;
+  height: 22px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.look-swatch span {
+  flex: 1;
+}
+.look-name {
+  font-weight: 750;
+}
+.look-desc {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+.look-bar {
+  position: fixed;
+  z-index: 60;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(78px + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  gap: 4px;
+  padding: 5px;
+  border-radius: 999px;
+  background: #111;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+  max-width: calc(100vw - 24px);
+  overflow-x: auto;
+}
+.look-bar button {
+  border: 0;
+  border-radius: 999px;
+  padding: 7px 12px;
+  background: transparent;
+  color: #ddd;
+  font: 600 0.8rem/1 -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+  white-space: nowrap;
+}
+.look-bar button.on {
+  background: #fff;
+  color: #111;
+}
+@media (min-width: 820px) {
+  .look-bar {
+    bottom: 20px;
+  }
+}
+[data-style='board'] :is(.main > .stack, .project > .stack) > :is(.muted, .hint, p, .link),
+[data-style='board'] .sp-wrap > .hint,
+[data-style='board'] .project-foot,
+[data-style='board'] .project-foot .link {
+  color: #fffaf0;
+  text-shadow: 0 1px 2px rgba(40, 20, 5, 0.6);
+}
+[data-style='board'] .btn.next {
+  background: var(--card);
+  border-color: var(--gold);
+  color: var(--gold);
+  box-shadow: 0 4px 10px rgba(50, 25, 5, 0.35);
+}
+[data-style='board'] .project-head .stage {
+  color: #ffd27a;
+}
