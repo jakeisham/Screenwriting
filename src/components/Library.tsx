@@ -5,21 +5,31 @@ import { useStore } from '../lib/store'
 import { ago } from '../lib/util'
 import { Pips } from './Pips'
 
+function ss(key: string, value?: string) {
+  try {
+    if (value === undefined) return sessionStorage.getItem(key)
+    sessionStorage.setItem(key, value)
+  } catch {
+    /* storage unavailable */
+  }
+  return null
+}
+
 type KindFilter = 'all' | 'film' | 'tv' | 'remix'
 
 export function Library() {
   const s = useStore()
-  const [kind, setKind] = useState<KindFilter>(() => (sessionStorage.getItem('wr-lib-kind') as KindFilter) || 'all')
-  const [st, setSt] = useState<Stage | 'all'>(() => (sessionStorage.getItem('wr-lib-stage') as Stage) || 'all')
+  const [kind, setKind] = useState<KindFilter>(() => (ss('wr-lib-kind') as KindFilter) || 'all')
+  const [st, setSt] = useState<Stage | 'all'>(() => (ss('wr-lib-stage') as Stage) || 'all')
   const [q, setQ] = useState('')
 
   const setK = (k: KindFilter) => {
     setKind(k)
-    sessionStorage.setItem('wr-lib-kind', k)
+    ss('wr-lib-kind', k)
   }
   const setS = (x: Stage | 'all') => {
     setSt(x)
-    sessionStorage.setItem('wr-lib-stage', x)
+    ss('wr-lib-stage', x)
   }
 
   const needle = q.trim().toLowerCase()

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { go, href } from '../lib/router'
 import { displayTitle } from '../lib/project'
-import { emptySource, fetchBreakdown, remixProgress } from '../lib/remix'
+import { DEMO, emptySource, fetchBreakdown, remixProgress } from '../lib/remix'
 import { accessToken, createRemixProject, useStore } from '../lib/store'
 import type { Kind, Source } from '../lib/types'
 import { Bar } from './ui'
@@ -50,6 +50,11 @@ export function RemixStart() {
         Take a movie or show you know, break it down, then rebuild it in a new genre — piece by piece, in your own words.
       </p>
 
+      {DEMO && (
+        <div className="card slim small">
+          <b>Preview mode.</b> Any title loads a sample breakdown of <i>Dead Man’s Chest</i>. The live app asks Claude about the title you type.
+        </div>
+      )}
       <div className="card stack">
         <div className="field">
           <label>Movie or TV show</label>

@@ -92,7 +92,12 @@ function persist(it: Item) {
 async function flushWrites() {
   const batch = [...pendingWrites.values()]
   pendingWrites.clear()
-  if (batch.length) await setMany(batch.map((it) => [it.id, it] as [string, Item]), idb)
+  if (!batch.length) return
+  try {
+    await setMany(batch.map((it) => [it.id, it] as [string, Item]), idb)
+  } catch {
+    /* storage unavailable */
+  }
 }
 
 window.addEventListener('pagehide', () => void flushWrites())
@@ -368,7 +373,12 @@ export async function signOut() {
 
 // ---- boot ----
 export async function init() {
-  const all = await entries<string, Item>(idb)
+  let all: [string, Item][] = []
+  try {
+    all = await entries<string, Item>(idb)
+  } catch {
+    // Storage blocked (private window, sandboxed preview): run in memory.
+  }
   all.forEach(([id, it]) => {
     if (it.type === 'project' && !(it.data as { purged?: boolean }).purged) it.data = normalize(it.data as Project)
     items.set(id, it)

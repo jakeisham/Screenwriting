@@ -170,7 +170,14 @@ export function newRemix(source: Source, fromClaude: boolean): Remix {
   return { source, fetchedAt: Date.now(), fromClaude, notes: {}, skipped: {}, extras: [] }
 }
 
+export const DEMO = !!import.meta.env.VITE_DEMO
+
 export async function fetchBreakdown(title: string, kind: Kind | '', token?: string): Promise<Source> {
+  if (DEMO) {
+    const { DEMO_SOURCE } = await import('./demoSource')
+    await new Promise((r) => setTimeout(r, 1200))
+    return structuredClone(DEMO_SOURCE)
+  }
   const res = await fetch('/api/breakdown', {
     method: 'POST',
     headers: { 'content-type': 'application/json', ...(token ? { authorization: `Bearer ${token}` } : {}) },

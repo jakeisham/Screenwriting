@@ -27,4 +27,6 @@ function devApi(): Plugin {
 
 export default defineConfig({
   plugins: [react(), devApi()],
+  // The single-file preview build (VITE_DEMO=1) needs one bundle.
+  build: process.env.VITE_DEMO ? { rollupOptions: { output: { inlineDynamicImports: true } } } : undefined,
 })

@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react'
 import { lengthTarget } from '../lib/framework'
 import { canFinishScript, sceneHeading } from '../lib/project'
 import { estimatePages, fromFountain, loggedPages, newEl, toFountain } from '../lib/screenplay'
+import { DEMO } from '../lib/remix'
 import { finishScript, logPages, updateProject } from '../lib/store'
 import type { Project, ScriptEl } from '../lib/types'
 import { countWords, fmtDate } from '../lib/util'
@@ -91,9 +92,11 @@ export function ScriptTab({ p }: { p: Project }) {
         <button className="btn ghost sm" onClick={() => download(`${fileBase}.fountain`, toFountain(p))} disabled={!p.script.length}>
           Export .fountain
         </button>
-        <button className="btn ghost sm" onClick={() => window.print()} disabled={!p.script.length}>
-          Print / PDF
-        </button>
+        {!DEMO && (
+          <button className="btn ghost sm" onClick={() => window.print()} disabled={!p.script.length}>
+            Print / PDF
+          </button>
+        )}
       </div>
 
       <ScreenplayEditor elements={p.script} onChange={onChange} />
