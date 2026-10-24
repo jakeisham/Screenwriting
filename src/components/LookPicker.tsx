@@ -45,7 +45,7 @@ export function LookBar() {
   const palette = usePalette()
   return (
     <div className="look-bar" role="group" aria-label="Colours">
-      {PALETTES.map((p) => (
+      {PALETTES.filter((p) => ['auto', 'neonday', 'neon'].includes(p.key)).map((p) => (
         <button
           key={p.key}
           className={look === 'game' && palette === p.key ? 'on' : ''}

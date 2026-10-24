@@ -670,3 +670,29 @@
   border-radius: 50%;
   flex: none;
 }
+
+/* Neon Day: the white, daytime counterpart to Neon Night. */
+:root[data-style='game'][data-palette='neonday'] {
+  --bg: #f4f7fb;
+  --bg2: #ffffff;
+  --card: #ffffff;
+  --card2: #f0f5fa;
+  --line: #0d1117;
+  --text: #0d1117;
+  --muted: #56657a;
+  --gold: #00a37c;
+  --gold2: #007a5c;
+  --coin: #ffd60a;
+  --green: #00a37c;
+  --red: #e8365a;
+  --blue: #1d6fe0;
+  --purple: #9b4dff;
+  --hero-a: #0f9d80;
+  --hero-b: #1d4ed8;
+  --on-hero: #ffffff;
+  --on-accent: #ffffff;
+  --toast: #0d1117;
+  --paper-line: #c9d3df;
+  --paper-muted: #8a97a8;
+  color-scheme: light;
+}

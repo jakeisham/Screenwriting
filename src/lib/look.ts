@@ -9,17 +9,19 @@ export const LOOKS: { key: Look; name: string; desc: string; swatch: string[] }[
   { key: 'original', name: 'Night Desk', desc: 'The original dark gold look.', swatch: ['#14110f', '#211c18', '#f2b544', '#7fcf8a', '#f4ede1'] },
 ]
 
-export type Palette = 'arcade' | 'ocean' | 'sunset' | 'mint' | 'bubblegum' | 'midnight' | 'neon'
+export type Palette = 'auto' | 'neonday' | 'arcade' | 'ocean' | 'sunset' | 'mint' | 'bubblegum' | 'midnight' | 'neon'
 
 // Colour palettes for the Game Night look.
 export const PALETTES: { key: Palette; name: string; swatch: string[] }[] = [
+  { key: 'auto', name: 'Auto (Day / Night)', swatch: ['#f4f7fb', '#00a37c', '#ffd60a', '#0d1117', '#00e5a8'] },
+  { key: 'neonday', name: 'Neon Day', swatch: ['#f4f7fb', '#00a37c', '#ffd60a', '#1d4ed8', '#0d1117'] },
+  { key: 'neon', name: 'Neon Night', swatch: ['#0d1117', '#00e5a8', '#ffe14d', '#00e5a8', '#161b26'] },
   { key: 'arcade', name: 'Arcade Violet', swatch: ['#f1efff', '#6a45ff', '#ffbe0b', '#18b85a', '#24214d'] },
   { key: 'ocean', name: 'Ocean Pop', swatch: ['#e4f4ff', '#0a74ff', '#ffb703', '#06c48a', '#0b2545'] },
   { key: 'sunset', name: 'Sunset Strip', swatch: ['#fff0e3', '#ff4f3f', '#ffc93c', '#1fa97a', '#3b1a1f'] },
   { key: 'mint', name: 'Mint & Coral', swatch: ['#e6f8f0', '#ff6b5e', '#ffd166', '#12a37f', '#183a33'] },
   { key: 'bubblegum', name: 'Bubblegum', swatch: ['#ffeaf4', '#ff3d8b', '#ffd23f', '#1db97a', '#3d1840'] },
   { key: 'midnight', name: 'Midnight Arcade', swatch: ['#141128', '#ff3d8b', '#ffd23f', '#2ee68f', '#221d42'] },
-  { key: 'neon', name: 'Neon Night', swatch: ['#0d1117', '#00e5a8', '#ffe14d', '#00e5a8', '#161b26'] },
 ]
 
 const KEY = 'wr-look'
@@ -45,14 +47,20 @@ function readPalette(): Palette {
   } catch {
     /* storage unavailable */
   }
-  return 'arcade'
+  return 'auto'
 }
 
 let palette: Palette = readPalette()
 
+// "Auto" follows the device's light/dark setting.
+const darkQuery = typeof matchMedia === 'function' ? matchMedia('(prefers-color-scheme: dark)') : null
+darkQuery?.addEventListener?.('change', () => {
+  if (palette === 'auto') apply()
+})
+
 function apply() {
   document.documentElement.dataset.style = current
-  document.documentElement.dataset.palette = palette
+  document.documentElement.dataset.palette = palette === 'auto' ? (darkQuery?.matches ? 'neon' : 'neonday') : palette
   const bg = getComputedStyle(document.documentElement).getPropertyValue('--bg').trim()
   document.querySelector('meta[name="theme-color"]')?.setAttribute('content', bg || '#14110f')
 }
