@@ -377,6 +377,7 @@
   color: var(--coin);
 }
 
+/* Game Night is the default look (see src/lib/look.ts). */
 /* ---------- look picker ---------- */
 .look-grid {
   display: grid;
