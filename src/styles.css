@@ -1813,3 +1813,249 @@ button {
 .simens-inline {
   color: var(--red);
 }
+
+/* ---------- scene board (note cards) ---------- */
+.tracker .big {
+  font-size: 1.6rem;
+}
+.tracker-acts {
+  display: flex;
+  gap: 8px;
+}
+.ta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 56px;
+  padding: 6px 8px;
+  border-radius: 10px;
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  font-variant-numeric: tabular-nums;
+}
+.ta b {
+  font-size: 1.2rem;
+}
+.ta span {
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+.ta-a1 b {
+  color: var(--blue);
+}
+.ta-a2 b {
+  color: var(--gold);
+}
+.ta-a3 b {
+  color: var(--purple);
+}
+.tracker-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin-top: 8px;
+  align-items: center;
+}
+.beat-dots {
+  display: inline-flex;
+  gap: 3px;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+.beat-dots i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--bg2);
+  border: 1px solid var(--line);
+}
+.beat-dots i.on {
+  background: var(--gold);
+  border-color: var(--gold);
+}
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  align-items: start;
+}
+@media (max-width: 860px) {
+  .board {
+    grid-template-columns: 1fr;
+  }
+}
+.lane {
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  border-top: 5px solid var(--blue);
+}
+.lane-a2 {
+  border-top-color: var(--gold);
+}
+.lane-a3 {
+  border-top-color: var(--purple);
+}
+.lane-beats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 6px;
+}
+.beat-chip {
+  font-size: 0.72rem;
+  padding: 3px 8px;
+  border-radius: 99px;
+  border: 1px dashed var(--line);
+  background: var(--card);
+  color: var(--muted);
+}
+.beat-chip.on {
+  border-style: solid;
+  border-color: var(--gold);
+  color: var(--text);
+}
+.beat-chip.simens-chip {
+  color: var(--red);
+  border-color: color-mix(in srgb, var(--red) 50%, transparent);
+  font-weight: 700;
+}
+.lane-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 56px;
+}
+.lane-empty {
+  border: 2px dashed var(--line);
+  border-radius: 10px;
+  padding: 14px;
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+.lane-add {
+  align-self: flex-start;
+}
+.note {
+  display: flex;
+  align-items: stretch;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: 0 2px 0 color-mix(in srgb, var(--line) 40%, transparent);
+  transition: transform 0.12s, box-shadow 0.12s;
+  min-width: 0;
+}
+.note.done {
+  border-left: 4px solid var(--green);
+}
+.note.lifted {
+  transform: rotate(-1.5deg) scale(1.02);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+  border-color: var(--gold);
+  position: relative;
+  z-index: 3;
+}
+.note-grip {
+  flex: none;
+  width: 30px;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: 1.1rem;
+  cursor: grab;
+  touch-action: none;
+  border-right: 1px dashed var(--line);
+}
+.board.dragging .note-grip {
+  cursor: grabbing;
+}
+.board.dragging {
+  user-select: none;
+}
+.note-body {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  padding: 8px 10px;
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.note-top {
+  display: flex;
+  gap: 6px;
+  align-items: baseline;
+  min-width: 0;
+}
+.note-n {
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.note-h {
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 0.82rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+.note-sum {
+  font-size: 0.86rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.note-tags {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.simens-tag {
+  color: var(--red);
+  border-color: color-mix(in srgb, var(--red) 50%, transparent);
+  font-weight: 700;
+}
+.sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0 max(0px, env(safe-area-inset-right, 0px)) 0 max(0px, env(safe-area-inset-left, 0px));
+}
+.sheet {
+  background: var(--card);
+  color: var(--text);
+  width: min(640px, 100%);
+  max-height: 88vh;
+  overflow-y: auto;
+  border-radius: 18px 18px 0 0;
+  padding: 16px 16px calc(16px + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: 1px solid var(--line);
+}
+@media (min-width: 720px) {
+  .sheet-backdrop {
+    align-items: center;
+  }
+  .sheet {
+    border-radius: 18px;
+  }
+}

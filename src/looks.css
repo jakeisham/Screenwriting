@@ -696,3 +696,32 @@
   --paper-muted: #8a97a8;
   color-scheme: light;
 }
+[data-style='game'] .note {
+  border: 2px solid var(--line);
+  box-shadow: 0 3px 0 var(--line);
+}
+[data-style='game'] .note.done {
+  border-left: 6px solid var(--green);
+}
+[data-style='game'] .lane {
+  border: 2.5px solid var(--line);
+  border-top-width: 7px;
+}
+[data-style='game'] .lane-a1 {
+  border-top-color: var(--blue);
+}
+[data-style='game'] .lane-a2 {
+  border-top-color: var(--gold);
+}
+[data-style='game'] .lane-a3 {
+  border-top-color: var(--purple);
+}
+[data-style='game'] .sheet {
+  border: 2.5px solid var(--line);
+}
+[data-style='game']:is([data-palette='midnight'], [data-palette='neon']) :is(.note, .lane, .sheet) {
+  border-color: color-mix(in srgb, var(--text) 30%, transparent);
+}
+[data-style='game']:is([data-palette='midnight'], [data-palette='neon']) .note {
+  box-shadow: 0 3px 0 #000;
+}
