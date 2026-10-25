@@ -725,3 +725,15 @@
 [data-style='game']:is([data-palette='midnight'], [data-palette='neon']) .note {
   box-shadow: 0 3px 0 #000;
 }
+[data-style='game'] .beat-block {
+  border: 2.5px solid var(--line);
+  box-shadow: 0 4px 0 var(--line);
+}
+[data-style='game'] .beat-block.open {
+  border-color: var(--gold);
+  box-shadow: 0 4px 0 var(--gold);
+}
+[data-style='game']:is([data-palette='midnight'], [data-palette='neon']) .beat-block:not(.open) {
+  border-color: color-mix(in srgb, var(--text) 30%, transparent);
+  box-shadow: 0 4px 0 #000;
+}

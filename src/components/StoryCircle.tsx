@@ -9,12 +9,14 @@ export function StoryCircle({
   onSelect,
   size = 320,
   label,
+  counts,
 }: {
   beats: Beats
   selected?: BeatKey
   onSelect?: (k: BeatKey) => void
   size?: number
   label?: string
+  counts?: Partial<Record<BeatKey, number>>
 }) {
   const c = size / 2
   const R = size * 0.37
@@ -83,6 +85,14 @@ export function StoryCircle({
               <text x={lx} y={ly} textAnchor="middle" dominantBaseline="central" className="cb-label">
                 {p.b.short}
               </text>
+            )}
+            {!small && counts && (counts[p.b.key] ?? 0) > 0 && (
+              <g className="cb-count-badge">
+                <circle cx={p.x + nodeR * 0.85} cy={p.y - nodeR * 0.85} r={nodeR * 0.55} />
+                <text x={p.x + nodeR * 0.85} y={p.y - nodeR * 0.85} textAnchor="middle" dominantBaseline="central">
+                  {counts[p.b.key]}
+                </text>
+              </g>
             )}
             {!small && p.b.simens && (
               <text x={lx} y={ly + 13} textAnchor="middle" dominantBaseline="central" className="cb-simens">
