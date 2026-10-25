@@ -17,6 +17,11 @@ export function Rules() {
               {b.n}. {b.title}.
             </b>{' '}
             {b.brief}{' '}
+            {b.simens && (
+              <>
+                <b className="simens-inline">{b.simens.label}</b>{' '}
+              </>
+            )}
             <span className="muted small">
               (Harmon: {b.harmon}
               {b.campbell ? ` · Campbell: ${b.campbell}` : ''})
@@ -27,6 +32,10 @@ export function Rules() {
 
       <div className="card">
         <div className="eyebrow">The rules · Dov Simens</div>
+        <div className="rule">
+          <b>Uh-oh! and Oh no!</b> Around page 10 something goes wrong (uh-oh, step 3). Around pages 75–90 everything seems lost (oh no!, step 7).
+          The story lives between those two moments.
+        </div>
         {SIMENS_RULES.map((x, i) => (
           <div key={x.title} className="rule">
             <b>

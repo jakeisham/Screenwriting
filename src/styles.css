@@ -1668,3 +1668,148 @@ button {
     margin-bottom: 2px;
   }
 }
+
+/* ---------- genres ---------- */
+.genre-slots {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.genre-slot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--bg2);
+}
+.genre-slot.primary {
+  border-color: var(--gold);
+}
+.slot-n {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  min-width: 60px;
+}
+.slot-name {
+  flex: 1;
+  text-align: left;
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--text);
+  font-weight: 700;
+}
+.playbook {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 14px;
+  background: var(--card2);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.pb-promise {
+  font-weight: 600;
+  margin: 0;
+}
+.pb-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  font-size: 0.88rem;
+}
+.pb-grid ul {
+  margin: 4px 0 0;
+  padding-left: 18px;
+}
+.pb-grid p {
+  margin: 2px 0 8px;
+}
+.pb-h {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  font-weight: 650;
+}
+.cost-1 {
+  color: var(--green);
+}
+.cost-3 {
+  color: var(--red);
+}
+@media (max-width: 720px) {
+  .pb-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- Simens markers + flow ---------- */
+.simens {
+  border-left: 4px solid var(--red);
+  background: color-mix(in srgb, var(--red) 8%, var(--card));
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin: 8px 0;
+  font-size: 0.9rem;
+}
+.simens b {
+  color: var(--red);
+  font-family: var(--display);
+  font-size: 1.05rem;
+}
+.cb-simens {
+  fill: var(--red);
+  font-size: 10px;
+  font-weight: 800;
+  pointer-events: none;
+}
+.from-idea {
+  border: 1px dashed var(--gold);
+  border-radius: 10px;
+  padding: 8px 12px;
+  margin: 8px 0;
+  font-size: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.idea-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 6px 14px;
+  font-size: 0.9rem;
+}
+.idea-summary b {
+  display: block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+.flow-next {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.tabs a .step-check {
+  color: var(--green);
+  margin-left: 4px;
+}
+.outline-ref details {
+  border-top: 1px solid var(--line);
+  padding: 6px 0;
+}
+.outline-ref summary {
+  cursor: pointer;
+  font-weight: 650;
+}
+.simens-inline {
+  color: var(--red);
+}

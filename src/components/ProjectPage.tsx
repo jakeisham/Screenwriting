@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { focusField, go, href } from '../lib/router'
-import { displayTitle, nextStep, stage, STAGE_LABEL } from '../lib/project'
+import { displayTitle, genreLabel, isLoglineDone, isOutlineDone, nextStep, stage, STAGE_LABEL } from '../lib/project'
 import { trashProject, useProject, useStore } from '../lib/store'
 import type { BeatKey } from '../lib/types'
 import { ago } from '../lib/util'
@@ -13,10 +13,10 @@ import { TvTab } from './TvTab'
 
 const TABS = [
   { key: 'remix', label: 'Remix', remixOnly: true },
-  { key: 'pitch', label: 'Logline' },
-  { key: 'outline', label: 'Outline' },
+  { key: 'pitch', label: '1 · Idea' },
+  { key: 'outline', label: '2 · Outline' },
+  { key: 'script', label: '3 · Script' },
   { key: 'tv', label: 'Series', tvOnly: true },
-  { key: 'script', label: 'Script' },
   { key: 'budget', label: 'Budget' },
 ]
 
@@ -41,6 +41,7 @@ export function ProjectPage({ id, tab = 'pitch', focus }: { id: string; tab?: st
 
   const tabs = TABS.filter((t) => (!t.tvOnly || p.kind === 'tv') && (!t.remixOnly || p.remix))
   const ns = nextStep(p)
+  const done: Record<string, boolean> = { pitch: isLoglineDone(p), outline: isOutlineDone(p), script: !!p.scriptDoneAt }
   const st = stage(p)
 
   return (
@@ -50,7 +51,7 @@ export function ProjectPage({ id, tab = 'pitch', focus }: { id: string; tab?: st
           <div>
             <div className="eyebrow">
               {p.kind === 'film' ? 'Film' : `TV · ${p.tvFormat === 'half' ? 'half-hour' : 'hour'}`}
-              {p.genre && ` · ${p.genre}`}
+              {genreLabel(p) && ` · ${genreLabel(p)}`}
               {p.remix && ` · Remix of ${p.remix.source.title || '?'}`} · <span className={`stage s-${st}`}>{STAGE_LABEL[st]}</span>
             </div>
             <h1>{displayTitle(p)}</h1>
@@ -65,6 +66,7 @@ export function ProjectPage({ id, tab = 'pitch', focus }: { id: string; tab?: st
           {tabs.map((t) => (
             <a key={t.key} href={href(`p/${p.id}/${t.key}`)} className={tab === t.key ? 'on' : ''}>
               {t.label}
+              {done[t.key] && <span className="step-check">✓</span>}
             </a>
           ))}
         </nav>

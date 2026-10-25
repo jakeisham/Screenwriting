@@ -16,6 +16,8 @@ export interface BeatDef {
   brief: string
   questions: string[]
   checks: string[]
+  // Dov Simens' plain-language marker for this beat, if any.
+  simens?: { label: string; note: string; questions: string[] }
 }
 
 export const BEATS: BeatDef[] = [
@@ -73,6 +75,11 @@ export const BEATS: BeatDef[] = [
       'Who or what delivers the push?',
     ],
     checks: ['It is an event we watch happen', 'It forces a decision, not just a mood'],
+    simens: {
+      label: 'Uh-oh!',
+      note: 'Simens: around page 10, something goes wrong. Life as the hero knew it is disrupted and they can’t ignore it.',
+      questions: ['What is the “uh-oh” moment, the thing that goes wrong?', 'Could an audience say “uh-oh” out loud when it happens?'],
+    },
   },
   {
     key: 'go',
@@ -146,6 +153,11 @@ export const BEATS: BeatDef[] = [
       'Who is with them, or who is gone, at this moment?',
     ],
     checks: ['The loss is something we can see', 'It is the lowest point of the story'],
+    simens: {
+      label: 'Oh no!',
+      note: 'Simens: the bottom. Everything the hero tried has failed and all seems lost, right before the final act.',
+      questions: ['What is the “oh no!” moment, when all seems lost?', 'Is it worse than the uh-oh? It should be.'],
+    },
   },
   {
     key: 'return',

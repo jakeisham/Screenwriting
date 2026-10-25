@@ -36,7 +36,7 @@ export function rows(p: Project): Row[] {
   const r = p.remix
   if (!r) return []
   const s = r.source
-  const g = p.genre || 'your genre'
+  const g = p.genres.join(' / ') || p.genre || 'your genre'
   const out: Row[] = []
   const pitch = (key: string, label: string, path: string, right: Right, questions: string[]) =>
     out.push({ key, section: 'pitch', label, left: String((s as unknown as Record<string, string>)[path] ?? ''), path: [path], right, questions })

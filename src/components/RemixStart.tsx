@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { go, href } from '../lib/router'
-import { displayTitle } from '../lib/project'
+import { displayTitle, genreLabel } from '../lib/project'
 import { DEMO, emptySource, fetchBreakdown, remixProgress } from '../lib/remix'
 import { createRemixProject, useStore } from '../lib/store'
 import type { Kind, Source } from '../lib/types'
@@ -123,7 +123,7 @@ export function RemixStart() {
                 <div className="row between">
                   <b>{displayTitle(p)}</b>
                   <span className="muted small">
-                    {p.remix!.source.title} → {p.genre || '?'}
+                    {p.remix!.source.title} → {genreLabel(p) || '?'}
                   </span>
                 </div>
                 <Bar value={pr.done / Math.max(1, pr.total)} />

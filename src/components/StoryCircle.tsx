@@ -84,6 +84,11 @@ export function StoryCircle({
                 {p.b.short}
               </text>
             )}
+            {!small && p.b.simens && (
+              <text x={lx} y={ly + 13} textAnchor="middle" dominantBaseline="central" className="cb-simens">
+                {p.b.simens.label}
+              </text>
+            )}
           </g>
         )
       })}

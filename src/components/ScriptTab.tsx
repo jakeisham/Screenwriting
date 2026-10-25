@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react'
-import { lengthTarget } from '../lib/framework'
+import { BEATS, lengthTarget } from '../lib/framework'
+import { href } from '../lib/router'
 import { canFinishScript, sceneHeading } from '../lib/project'
 import { estimatePages, fromFountain, loggedPages, newEl, toFountain } from '../lib/screenplay'
 import { DEMO } from '../lib/remix'
@@ -45,7 +46,7 @@ export function ScriptTab({ p }: { p: Project }) {
   return (
     <div className="stack">
       <div className={`card banner ${p.scriptDoneAt ? 'won' : ''}`}>
-        <div className="eyebrow">Game 3 · The Screenplay</div>
+        <div className="eyebrow">Step 3 of 3 · The Script</div>
         <div className="row between wrap">
           <div>
             <div className="big">
@@ -102,6 +103,8 @@ export function ScriptTab({ p }: { p: Project }) {
       <ScreenplayEditor elements={p.script} onChange={onChange} />
       <div className="muted small">Editor estimate: {sp.toFixed(1)} pages (55 lines per page, standard margins).</div>
 
+      <OutlineRef p={p} />
+
       <div className="card">
         <div className="eyebrow">Log pages written elsewhere</div>
         <div className="muted small">Writing in Final Draft, WriterDuet, or on paper? Log the pages here to keep your streak and XP.</div>
@@ -141,6 +144,53 @@ export function ScriptTab({ p }: { p: Project }) {
       </div>
 
       <PrintScript title={p.title} elements={p.script} />
+    </div>
+  )
+}
+
+// Your outline, kept beside the page so Step 3 builds on Step 2.
+function OutlineRef({ p }: { p: Project }) {
+  const hasBeats = BEATS.some((b) => p.beats[b.key].trim())
+  const scenes = (a: number) => p.scenes.filter((s) => s.act === a)
+  if (!hasBeats && !p.scenes.length && !p.logline.trim()) return null
+  return (
+    <div className="card outline-ref">
+      <div className="row between wrap gap">
+        <div className="eyebrow">Your outline</div>
+        <a className="link small" href={href(`p/${p.id}/outline`)}>
+          edit outline
+        </a>
+      </div>
+      {p.logline.trim() && <p className="small">{p.logline}</p>}
+      <details open>
+        <summary>The 9 beats</summary>
+        <ol className="small">
+          {BEATS.map((b) => (
+            <li key={b.key}>
+              <b>{b.title}</b>
+              {b.simens && <span className="tag">{b.simens.label}</span>}
+              {p.beats[b.key].trim() ? ` — ${p.beats[b.key]}` : <span className="muted"> — not yet</span>}
+            </li>
+          ))}
+        </ol>
+      </details>
+      {[1, 2, 3].map((a) =>
+        scenes(a).length ? (
+          <details key={a}>
+            <summary>
+              Act {a} · {scenes(a).length} scene{scenes(a).length === 1 ? '' : 's'}
+            </summary>
+            <ol className="small">
+              {scenes(a).map((s) => (
+                <li key={s.id}>
+                  <b className="caps">{sceneHeading(s)}</b>
+                  {s.summary.trim() && ` — ${s.summary}`}
+                </li>
+              ))}
+            </ol>
+          </details>
+        ) : null
+      )}
     </div>
   )
 }

@@ -1,9 +1,11 @@
-import { GENRES, LOW_BUDGET_GENRES, PITCH_FIELDS } from '../lib/framework'
-import { isLoglineDone, loglineParts } from '../lib/project'
+import { PITCH_FIELDS } from '../lib/framework'
+import { href } from '../lib/router'
+import { beatsFilled, isLoglineDone, loglineParts, withGenres } from '../lib/project'
 import { updateProject } from '../lib/store'
 import type { Project } from '../lib/types'
 import { filled, fmtDate } from '../lib/util'
-import { AutoTextarea, GenrePicker, QuestionField } from './ui'
+import { GenreSection } from './GenreSection'
+import { AutoTextarea, QuestionField } from './ui'
 
 export function PitchTab({ p }: { p: Project }) {
   const set = (patch: Partial<Project>) => updateProject(p.id, (x) => ({ ...x, ...patch }))
@@ -15,7 +17,7 @@ export function PitchTab({ p }: { p: Project }) {
       <div className={`card banner ${isLoglineDone(p) ? 'won' : ''}`}>
         <div className="row between">
           <div>
-            <div className="eyebrow">Game 1 · The Logline</div>
+            <div className="eyebrow">Step 1 of 3 · The Idea</div>
             <div className="big">
               {isLoglineDone(p) ? 'Idea logged ✓' : `${done} / 5 pieces`}
             </div>
@@ -45,17 +47,10 @@ export function PitchTab({ p }: { p: Project }) {
       <div className="qfield" id="f-genre">
         <div className="qfield-head">
           <span className={`check ${filled(p.genre) ? 'on' : ''}`}>{filled(p.genre) ? '✓' : ''}</span>
-          <span className="qlabel">Genre</span>
+          <span className="qlabel">Genres</span>
         </div>
-        <div className="question">Pick one genre and stick to it. Which one is this?</div>
-        <GenrePicker value={p.genre} genres={GENRES} onChange={(g) => set({ genre: g })} />
-        {p.genre && (
-          <div className="hint">
-            {LOW_BUDGET_GENRES.includes(p.genre)
-              ? `Simens: ${p.genre.toLowerCase()} is one of the genres that sells best at low budgets.`
-              : 'Simens: horror, thriller and comedy sell best at low budgets. (Just a fact — your call.)'}
-          </div>
-        )}
+        <div className="question">What genre is it? Pick up to three, most important first. Tap a genre for its playbook.</div>
+        <GenreSection value={p.genres} onChange={(g) => updateProject(p.id, (x) => withGenres(x, g))} />
       </div>
 
       <div className="qfield" id="f-seed">
@@ -96,6 +91,20 @@ export function PitchTab({ p }: { p: Project }) {
           />
         </div>
       ))}
+
+      <div className={`card flow-next ${isLoglineDone(p) ? 'banner won' : ''}`}>
+        <div>
+          <div className="eyebrow">Next · Step 2 of 3</div>
+          <div className="big">Build the outline</div>
+          <div className="muted small">
+            Your hero, want, obstacle and theme carry over onto the matching Story Circle steps.
+            {beatsFilled(p) > 0 && ` ${beatsFilled(p)}/9 beats done so far.`}
+          </div>
+        </div>
+        <a className="btn" href={href(`p/${p.id}/outline`)}>
+          Continue to Outline →
+        </a>
+      </div>
     </div>
   )
 }

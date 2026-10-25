@@ -10,6 +10,7 @@ export function newProject(kind: Kind, tvFormat: TvFormat = 'half'): Project {
     tvFormat,
     title: '',
     genre: '',
+    genres: [],
     seed: '',
     hero: '',
     want: '',
@@ -41,6 +42,7 @@ export function normalize(p: Partial<Project>): Project {
     ...p,
     beats: { ...base.beats, ...(p.beats ?? {}) },
     seasonBeats: { ...base.seasonBeats, ...(p.seasonBeats ?? {}) },
+    genres: p.genres?.length ? p.genres : p.genre ? [p.genre] : [],
     remix: p.remix
       ? { ...p.remix, notes: p.remix.notes ?? {}, skipped: p.remix.skipped ?? {}, extras: p.remix.extras ?? [] }
       : undefined,
@@ -175,3 +177,13 @@ export function filledSteps(p: Project): string[] {
 }
 
 export const displayTitle = (p: Project) => p.title.trim() || 'Untitled'
+
+export const MAX_GENRES = 3
+
+// Keep the primary `genre` in step with the ordered `genres` list.
+export const withGenres = (p: Project, genres: string[]): Project => {
+  const g = genres.filter(Boolean).slice(0, MAX_GENRES)
+  return { ...p, genres: g, genre: g[0] ?? '' }
+}
+
+export const genreLabel = (p: Project) => (p.genres.length ? p.genres : p.genre ? [p.genre] : []).join(' / ')

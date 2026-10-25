@@ -54,7 +54,10 @@ export interface Project {
   kind: Kind
   tvFormat: TvFormat
   title: string
+  // Primary genre (always genres[0]); kept for older records and simple lookups.
   genre: string
+  // Up to 3 genres, most important first.
+  genres: string[]
   seed: string
   hero: string
   want: string

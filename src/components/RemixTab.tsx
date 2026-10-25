@@ -1,12 +1,12 @@
 import { memo, useState } from 'react'
-import { GENRES } from '../lib/framework'
 import { href } from '../lib/router'
-import { isLoglineDone } from '../lib/project'
+import { genreLabel, isLoglineDone, withGenres } from '../lib/project'
 import { fetchBreakdown, getRight, remixProgress, rowDone, rows, SECTIONS, setLeft, setRight, type Row, type SectionKey } from '../lib/remix'
 import { updateProject } from '../lib/store'
 import type { Kind, Project, RemixExtra, TvFormat } from '../lib/types'
 import { filled, fmtDate, uid } from '../lib/util'
-import { AutoTextarea, Bar, GenrePicker } from './ui'
+import { GenreSection } from './GenreSection'
+import { AutoTextarea, Bar } from './ui'
 
 export function RemixTab({ p }: { p: Project }) {
   const r = p.remix!
@@ -50,12 +50,12 @@ export function RemixTab({ p }: { p: Project }) {
       </div>
 
       <div className="card">
-        <div className="eyebrow">1 · Pick your genre</div>
+        <div className="eyebrow">1 · Pick your genres (up to 3)</div>
         <div className="small muted" style={{ marginBottom: 8 }}>
           Original: <b>{src.genre || '—'}</b>
           {src.tone && <> · tone: {src.tone}</>}
         </div>
-        <GenrePicker value={p.genre} genres={GENRES} onChange={(g) => set((x) => ({ ...x, genre: g }))} />
+        <GenreSection value={p.genres} onChange={(g) => set((x) => withGenres(x, g))} />
         <div className="eyebrow" style={{ marginTop: 14 }}>
           Format of your version
         </div>
@@ -90,7 +90,7 @@ export function RemixTab({ p }: { p: Project }) {
 
       <div className="remix-head-row">
         <div>Original · {src.title}</div>
-        <div>Your {p.genre || 'version'}</div>
+        <div>Your {genreLabel(p) || 'version'}</div>
       </div>
 
       {sections.map((s) => (

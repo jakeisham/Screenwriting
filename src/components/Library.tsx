@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { href } from '../lib/router'
-import { displayTitle, nextStep, stage, STAGE_LABEL, type Stage } from '../lib/project'
+import { displayTitle, genreLabel, nextStep, stage, STAGE_LABEL, type Stage } from '../lib/project'
 import { useStore } from '../lib/store'
 import { ago } from '../lib/util'
 import { Pips } from './Pips'
@@ -37,7 +37,7 @@ export function Library() {
     (p) =>
       (kind === 'all' || (kind === 'remix' ? !!p.remix : p.kind === kind)) &&
       (st === 'all' || stage(p) === st) &&
-      (!needle || [p.title, p.logline, p.hero, p.want, p.obstacle, p.genre, p.seed, p.theme].join(' ').toLowerCase().includes(needle))
+      (!needle || [p.title, p.logline, p.hero, p.want, p.obstacle, ...p.genres, p.seed, p.theme].join(' ').toLowerCase().includes(needle))
   )
   const count = (x: Stage) =>
     s.projects.filter((p) => (kind === 'all' || (kind === 'remix' ? !!p.remix : p.kind === kind)) && stage(p) === x).length
@@ -78,7 +78,7 @@ export function Library() {
             <div className="row between">
               <div className="eyebrow">
                 {p.kind === 'film' ? 'Film' : `TV · ${p.tvFormat === 'half' ? '½ hr' : '1 hr'}`}
-                {p.genre && ` · ${p.genre}`}
+                {genreLabel(p) && ` · ${genreLabel(p)}`}
                 {p.remix && ` · remix of ${p.remix.source.title || '?'}`}
               </div>
               <span className={`stage s-${stage(p)} small`}>{STAGE_LABEL[stage(p)]}</span>

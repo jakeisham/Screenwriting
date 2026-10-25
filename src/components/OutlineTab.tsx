@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { ACT_SHARE, BEATS, BEAT_KEYS, TIMES, beatPages, lengthTarget } from '../lib/framework'
 import { actsWithScenes, beatsFilled, isOutlineDone, newScene, sceneFilled, sceneHeading } from '../lib/project'
+import { href } from '../lib/router'
 import { updateProject } from '../lib/store'
 import type { Act, BeatKey, Project, Scene } from '../lib/types'
 import { filled, fmtDate } from '../lib/util'
@@ -17,7 +18,7 @@ export function OutlineTab({ p, initialBeat }: { p: Project; initialBeat?: BeatK
   return (
     <div className="stack">
       <div className={`card banner ${isOutlineDone(p) ? 'won' : ''}`}>
-        <div className="eyebrow">Game 2 · The Outline</div>
+        <div className="eyebrow">Step 2 of 3 · The Outline</div>
         <div className="big">{isOutlineDone(p) ? 'Outline complete ✓' : `${beatsFilled(p)} / 9 beats · ${acts.length} / 3 acts with scenes`}</div>
         <div className="muted small">
           {p.outlineDoneAt
@@ -25,6 +26,8 @@ export function OutlineTab({ p, initialBeat }: { p: Project; initialBeat?: BeatK
             : `All 9 beats + at least one scene in each act${p.kind === 'tv' ? ' + the series engine (TV tab)' : ''} = this week’s outline.`}
         </div>
       </div>
+
+      <IdeaSummary p={p} />
 
       <div className="outline-grid">
         <div className="card center">
@@ -47,10 +50,16 @@ export function OutlineTab({ p, initialBeat }: { p: Project; initialBeat?: BeatK
             )}
           </div>
           <p className="brief">{beat.brief}</p>
+          {beat.simens && (
+            <div className="simens">
+              <b>{beat.simens.label}</b> {beat.simens.note}
+            </div>
+          )}
+          <FromIdea p={p} beat={sel} />
           <QuestionField
             key={sel}
             label="Your beat"
-            questions={beat.questions}
+            questions={[...(beat.simens?.questions ?? []), ...beat.questions]}
             value={p.beats[sel]}
             onChange={(v) => set((x) => ({ ...x, beats: { ...x.beats, [sel]: v } }))}
             minRows={3}
@@ -82,17 +91,94 @@ export function OutlineTab({ p, initialBeat }: { p: Project; initialBeat?: BeatK
         </div>
       </div>
 
-      {p.theme.trim() && (
-        <div className="card slim">
-          <span className="eyebrow">Your theme question</span> <span>{p.theme}</span>
-        </div>
-      )}
 
       <ActBalance p={p} />
 
       {([1, 2, 3] as Act[]).map((a) => (
         <ActSection key={a} p={p} act={a} />
       ))}
+
+      <div className={`card flow-next ${isOutlineDone(p) ? 'banner won' : ''}`}>
+        <div>
+          <div className="eyebrow">Next · Step 3 of 3</div>
+          <div className="big">Write the script</div>
+          <div className="muted small">Your outline stays beside the script page, and your scene headings can drop straight in.</div>
+        </div>
+        <a className="btn" href={href(`p/${p.id}/script`)}>
+          Continue to Script →
+        </a>
+      </div>
+    </div>
+  )
+}
+
+// Which idea piece feeds which Story Circle step.
+export const IDEA_FOR_BEAT: Partial<Record<BeatKey, { label: string; field: 'hero' | 'want' | 'obstacle' | 'theme' }>> = {
+  you: { label: 'Your hero', field: 'hero' },
+  want: { label: 'Their want', field: 'want' },
+  search: { label: 'What stands in the way', field: 'obstacle' },
+  take: { label: 'What stands in the way', field: 'obstacle' },
+  change: { label: 'Your theme question', field: 'theme' },
+}
+
+function FromIdea({ p, beat }: { p: Project; beat: BeatKey }) {
+  const link = IDEA_FOR_BEAT[beat]
+  if (!link) return null
+  const text = p[link.field].trim()
+  if (!text) return null
+  const empty = !filled(p.beats[beat])
+  return (
+    <div className="from-idea">
+      <div>
+        <span className="eyebrow">From your idea · {link.label}</span>
+        <div>{text}</div>
+      </div>
+      {empty && (
+        <button
+          className="btn ghost sm"
+          style={{ alignSelf: 'flex-start' }}
+          onClick={() => updateProject(p.id, (x) => ({ ...x, beats: { ...x.beats, [beat]: text } }))}
+        >
+          Start this beat from it
+        </button>
+      )}
+    </div>
+  )
+}
+
+function IdeaSummary({ p }: { p: Project }) {
+  const rows = [
+    ['Logline', p.logline],
+    ['Hero', p.hero],
+    ['Want', p.want],
+    ['In the way', p.obstacle],
+    ['Theme', p.theme],
+  ].filter(([, v]) => v.trim())
+  if (!rows.length)
+    return (
+      <div className="card slim row between wrap gap">
+        <span className="muted small">Start with the idea. Your hero, want and obstacle will show up here and on the circle.</span>
+        <a className="btn ghost sm" href={href(`p/${p.id}/pitch`)}>
+          ← Step 1 · Idea
+        </a>
+      </div>
+    )
+  return (
+    <div className="card">
+      <div className="row between wrap gap">
+        <div className="eyebrow">Your idea{p.genres.length ? ` · ${p.genres.join(' / ')}` : ''}</div>
+        <a className="link small" href={href(`p/${p.id}/pitch`)}>
+          edit idea
+        </a>
+      </div>
+      <div className="idea-summary">
+        {rows.map(([k, v]) => (
+          <div key={k}>
+            <b>{k}</b>
+            {v}
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
