@@ -8,7 +8,7 @@ export function NewIdea({ kind }: { kind?: Kind }) {
   const s = useStore()
   const start = (k: Kind, f: TvFormat = 'half') => {
     const id = createProject(k, f)
-    go(`p/${id}/pitch/genre`)
+    go(`p/${id}/pitch/title`)
   }
 
   if (!kind) {

@@ -21,6 +21,7 @@ export const SourceSchema = z.object({
   hero: z.string().describe('The protagonist, in a few words'),
   heroWant: z.string().describe('What the protagonist wants that we can see on screen'),
   obstacle: z.string().describe('The main opposing force'),
+  stakes: z.string().describe('What the hero loses if they fail'),
   characters: z.array(
     z.object({
       name: z.string(),

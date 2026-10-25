@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { href } from '../lib/router'
-import { displayTitle, genreLabel, nextStep, stage, STAGE_LABEL, type Stage } from '../lib/project'
+import { displayTitle, genreLabel, isLoglineDone, nextStep, pitchText, stage, STAGE_LABEL, type Stage } from '../lib/project'
 import { useStore } from '../lib/store'
 import { ago } from '../lib/util'
 import { Pips } from './Pips'
@@ -37,7 +37,7 @@ export function Library() {
     (p) =>
       (kind === 'all' || (kind === 'remix' ? !!p.remix : p.kind === kind)) &&
       (st === 'all' || stage(p) === st) &&
-      (!needle || [p.title, p.logline, p.hero, p.want, p.obstacle, ...p.genres, p.seed, p.theme].join(' ').toLowerCase().includes(needle))
+      (!needle || [p.title, p.logline, p.hero, p.want, p.obstacle, p.stakes, p.comp1, p.comp2, ...p.genres, p.seed, p.theme].join(' ').toLowerCase().includes(needle))
   )
   const count = (x: Stage) =>
     s.projects.filter((p) => (kind === 'all' || (kind === 'remix' ? !!p.remix : p.kind === kind)) && stage(p) === x).length
@@ -84,8 +84,8 @@ export function Library() {
               <span className={`stage s-${stage(p)} small`}>{STAGE_LABEL[stage(p)]}</span>
             </div>
             <div className="big">{displayTitle(p)}</div>
-            {p.logline.trim() ? (
-              <div className="clamp">{p.logline}</div>
+            {p.logline.trim() || isLoglineDone(p) ? (
+              <div className="clamp">{p.logline.trim() || pitchText(p)}</div>
             ) : p.seed.trim() ? (
               <div className="clamp muted">{p.seed}</div>
             ) : null}

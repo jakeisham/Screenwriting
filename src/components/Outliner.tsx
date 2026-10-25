@@ -199,11 +199,11 @@ export function Outliner({ p, focus }: { p: Project; focus?: BeatKey }) {
 }
 
 // Which idea piece feeds which beat.
-const IDEA_FOR_BEAT: Partial<Record<BeatKey, { label: string; field: 'hero' | 'want' | 'obstacle' | 'theme' }>> = {
+const IDEA_FOR_BEAT: Partial<Record<BeatKey, { label: string; field: 'hero' | 'want' | 'obstacle' | 'stakes' | 'theme' }>> = {
   you: { label: 'Your hero', field: 'hero' },
   want: { label: 'Their want', field: 'want' },
   search: { label: 'What stands in the way', field: 'obstacle' },
-  take: { label: 'What stands in the way', field: 'obstacle' },
+  take: { label: 'What’s at stake', field: 'stakes' },
   change: { label: 'Your theme question', field: 'theme' },
 }
 

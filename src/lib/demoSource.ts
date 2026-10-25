@@ -18,6 +18,7 @@ export const DEMO_SOURCE: Source = {
   hero: 'Captain Jack Sparrow, a roguish pirate captain',
   heroWant: "The key to the Dead Man's Chest, to free himself from his debt to Davy Jones",
   obstacle: 'Davy Jones, his crew and the Kraken, plus Lord Cutler Beckett and the East India Trading Company',
+  stakes: 'Jack’s soul and freedom, Will and Elizabeth’s marriage, and control of the seas',
   characters: [
     { name: 'Jack Sparrow', role: 'Hero', description: 'Captain of the Black Pearl, a charming, unreliable pirate.', want: 'To escape his debt to Davy Jones', flaw: 'Self-interest; runs when cornered' },
     { name: 'Will Turner', role: 'Ally', description: 'Blacksmith turned reluctant pirate.', want: "To free Elizabeth, then his father", flaw: 'Rigid sense of honor; jealousy' },

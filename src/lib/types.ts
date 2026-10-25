@@ -62,6 +62,13 @@ export interface Project {
   hero: string
   want: string
   obstacle: string
+  // The pitch (6 parts in order: title+genre, hero, want, obstacle, stakes, why now / why you).
+  stakes: string
+  whyNow: string
+  whyYou: string
+  comp1: string
+  comp2: string
+  budget: string
   logline: string
   theme: string
   beats: Beats
@@ -139,6 +146,7 @@ export interface Source {
   hero: string
   heroWant: string
   obstacle: string
+  stakes: string
   characters: SourceCharacter[]
   beats: Beats
   engine: string

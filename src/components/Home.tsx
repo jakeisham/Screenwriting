@@ -44,7 +44,7 @@ export function Home() {
       <div className="card">
         <div className="eyebrow">Your quotas</div>
         <div className="rings">
-          <Ring value={st.ideaToday} max={s.settings.dailyIdeas} label="Idea today" sub="finished logline" />
+          <Ring value={st.ideaToday} max={s.settings.dailyIdeas} label="Idea today" sub="finished pitch" />
           <Ring value={st.outlinesWeek} max={s.settings.weeklyOutlines} label="Outline this week" sub={`${daysLeftWeek}d left`} />
           <Ring value={st.scriptsMonth} max={s.settings.monthlyScripts} label="Script this month" sub={`${daysLeftMonth}d left`} />
         </div>

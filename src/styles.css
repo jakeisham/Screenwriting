@@ -2251,3 +2251,68 @@ button {
   font-weight: 800;
   pointer-events: none;
 }
+
+/* ---------- pitch (idea page) ---------- */
+.pitch-line-card {
+  position: sticky;
+  top: calc(env(safe-area-inset-top, 0px) + 64px);
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.pitch-line {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.5;
+}
+.pitch-line .blank {
+  color: var(--muted);
+  background: color-mix(in srgb, var(--gold) 12%, transparent);
+  border-radius: 4px;
+  padding: 0 3px;
+  font-style: italic;
+}
+.pitch-section-h {
+  padding: 6px 2px 0;
+}
+.step-n {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--line);
+  display: inline-grid;
+  place-items: center;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--muted);
+  flex: none;
+}
+.step-n.on {
+  background: var(--green);
+  border-color: var(--green);
+  color: var(--on-green);
+}
+.pitch-step #f-genre {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.comp-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+}
+.comp-meets {
+  font-weight: 700;
+  color: var(--muted);
+}
+@media (max-width: 720px) {
+  .pitch-line-card {
+    position: static;
+  }
+  .comp-row {
+    grid-template-columns: 1fr;
+  }
+}

@@ -11,7 +11,7 @@ export function Pips({ p }: { p: Project }) {
   const pages = totalPages(p)
   const { min } = lengthTarget(p.kind, p.tvFormat)
   const items = [
-    { k: 'Logline', on: isLoglineDone(p), part: !isLoglineDone(p) && [p.hero, p.want, p.obstacle, p.logline].some(filled) },
+    { k: 'Pitch', on: isLoglineDone(p), part: !isLoglineDone(p) && [p.title, p.hero, p.want, p.obstacle, p.stakes].some(filled) },
     { k: 'Theme', on: filled(p.theme) },
     ...(p.kind === 'tv' ? [{ k: 'Engine', on: filled(p.engine) }] : []),
     { k: `Beats ${beats}/9`, on: beats === 9, part: beats > 0 && beats < 9 },

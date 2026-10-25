@@ -16,7 +16,7 @@ export const SECTIONS: { key: SectionKey; title: string; blurb: string; addLabel
   { key: 'notable', title: 'Other notable elements', blurb: 'Motifs, devices and signatures worth translating for inspiration.', addLabel: '+ New element' },
 ]
 
-type Right = { kind: 'field'; field: 'title' | 'hero' | 'want' | 'obstacle' | 'logline' | 'theme' | 'engine' } | { kind: 'beat'; beat: BeatKey } | { kind: 'note' }
+type Right = { kind: 'field'; field: 'title' | 'hero' | 'want' | 'obstacle' | 'stakes' | 'logline' | 'theme' | 'engine' } | { kind: 'beat'; beat: BeatKey } | { kind: 'note' }
 
 export interface Row {
   key: string
@@ -45,6 +45,7 @@ export function rows(p: Project): Row[] {
   pitch('hero', 'The hero', 'hero', { kind: 'field', field: 'hero' }, q(g, 'Who is the hero in your {g}?', 'What do they do for a living in your world?', 'What is their flaw in your version?'))
   pitch('want', 'The want', 'heroWant', { kind: 'field', field: 'want' }, q(g, 'What does your hero want — one thing we can see?', 'Is it the same want in new clothes, or something different?'))
   pitch('obstacle', 'What stands in the way', 'obstacle', { kind: 'field', field: 'obstacle' }, q(g, 'Who or what opposes your hero in your {g}?', 'What is the {g} version of this force?'))
+  pitch('stakes', 'What’s at stake', 'stakes', { kind: 'field', field: 'stakes' }, q(g, 'What does your hero lose if they fail, in your {g}?', 'Same stakes, or higher?'))
   pitch('logline', 'Logline', 'logline', { kind: 'field', field: 'logline' }, q(g, 'Now say your version in one sentence.', 'Could someone tell what genre it is from the logline alone?'))
   pitch('theme', 'Theme question', 'theme', { kind: 'field', field: 'theme' }, q(g, 'Does your version ask the same question — or a new one?', 'What question does your ending answer?'))
   pitch('tone', 'Tone', 'tone', { kind: 'note' }, q(g, 'What is the tone of your version?', 'What does {g} do to the tone?'))
@@ -153,6 +154,7 @@ export function emptySource(title: string, kind: Kind): Source {
     hero: '',
     heroWant: '',
     obstacle: '',
+    stakes: '',
     characters: [
       { name: 'Hero', role: 'Hero', description: '', want: '', flaw: '' },
       { name: 'Villain', role: 'Villain', description: '', want: '', flaw: '' },

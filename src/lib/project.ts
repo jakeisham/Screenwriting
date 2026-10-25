@@ -15,6 +15,12 @@ export function newProject(kind: Kind, tvFormat: TvFormat = 'half'): Project {
     hero: '',
     want: '',
     obstacle: '',
+    stakes: '',
+    whyNow: '',
+    whyYou: '',
+    comp1: '',
+    comp2: '',
+    budget: '',
     logline: '',
     theme: '',
     beats: emptyBeats(),
@@ -74,9 +80,63 @@ export const sceneFilled = (s: Scene) => filled(s.location) && filled(s.summary)
 
 // ---- Completion rules (these drive the quotas) ----
 
-export const loglineParts = (p: Project) => [p.hero, p.want, p.obstacle, p.logline]
+// Pitch parts 1–5 make the idea (title + genre, hero, want, obstacle, stakes); part 6 makes it pitch-ready.
+export const loglineParts = (p: Project) => [p.title, p.hero, p.want, p.obstacle, p.stakes]
 
 export const isLoglineDone = (p: Project) => filled(p.genre) && loglineParts(p).every(filled)
+
+export const isPitchReady = (p: Project) => isLoglineDone(p) && filled(p.whyNow) && filled(p.whyYou)
+
+const article = (w: string) => (/^[aeiou]/i.test(w.trim()) ? 'an' : 'a')
+const bare = (s: string) => s.trim().replace(/[.!?]+$/, '')
+// Lower-case a leading everyday word so the writer's sentence fits mid-line ("A caller" → "a caller"); names stay as typed.
+const OPENERS = /^(a|an|the|if|he|she|they|it|his|her|their|its|everyone|everything|nobody|no one|someone|people)\b/i
+const fit = (s: string) => (OPENERS.test(s) ? s.charAt(0).toLowerCase() + s.slice(1) : s)
+
+export const formatLabel = (p: Project) =>
+  p.kind === 'film' ? 'feature' : p.tvFormat === 'half' ? 'half-hour series' : 'hour-long series'
+
+// The fill-in pitch line, built only from the writer's own answers. Missing pieces stay as [blanks].
+export function pitchLine(p: Project) {
+  const g = p.genres.length ? p.genres.join('-').toLowerCase() : ''
+  const parts: { text: string; blank?: boolean }[] = []
+  const put = (v: string, blank: string) => parts.push(v.trim() ? { text: bare(v) } : { text: `[${blank}]`, blank: true })
+  put(p.title, 'Title')
+  parts.push({ text: g ? ` is ${article(g)} ${g} ${formatLabel(p)} about ` : ' is a ' })
+  if (!g) parts.push({ text: '[genre]', blank: true }, { text: ` ${formatLabel(p)} about ` })
+  const hero = bare(p.hero).replace(/^(a|an|the)\s+/i, '')
+  parts.push(hero ? { text: `${article(hero)} ${hero}` } : { text: 'a ' }, ...(hero ? [] : [{ text: '[hero]', blank: true }]))
+  parts.push({ text: ' who wants ' })
+  put(bare(p.want).replace(/^(he|she|they|it|i)\s+wants?\s+/i, ''), 'goal')
+  parts.push({ text: ', but ' })
+  put(fit(bare(p.obstacle)), 'problem')
+  const stakes = bare(p.stakes)
+  if (/^if\b/i.test(stakes)) {
+    // The writer already phrased it as a condition: use their sentence as written.
+    parts.push({ text: '. ' }, { text: stakes.charAt(0).toUpperCase() + stakes.slice(1) })
+  } else {
+    parts.push({ text: '. If they fail, ' })
+    put(fit(stakes), 'stakes')
+  }
+  parts.push({ text: '.' })
+  if (p.comp1.trim() || p.comp2.trim()) {
+    parts.push({ text: ' It’s ' })
+    put(p.comp1, 'comp')
+    parts.push({ text: ' meets ' })
+    put(p.comp2, 'comp')
+    parts.push({ text: '.' })
+  }
+  return parts
+}
+
+export const pitchText = (p: Project) => pitchLine(p).map((x) => x.text).join('')
+
+// Spoken pitch: the line plus why now / why you / engine / budget, at ~150 words a minute.
+export function pitchSeconds(p: Project) {
+  const spoken = [pitchText(p), p.whyNow, p.whyYou, p.kind === 'tv' ? p.engine : '', p.budget].join(' ')
+  const words = spoken.replace(/\[[^\]]*\]/g, '').split(/\s+/).filter(Boolean).length
+  return Math.round((words / 150) * 60)
+}
 
 export const beatsFilled = (p: Project) => BEAT_KEYS.filter((k) => filled(p.beats[k])).length
 
@@ -111,10 +171,12 @@ export interface NextStep {
 }
 
 export function nextStep(p: Project): NextStep | null {
+  if (!filled(p.title)) return { label: 'Name it', tab: 'pitch', focus: 'title' }
   if (!filled(p.genre)) return { label: 'Pick a genre', tab: 'pitch', focus: 'genre' }
-  for (const k of ['hero', 'want', 'obstacle', 'logline'] as const)
-    if (!filled(p[k])) return { label: `Write the ${k === 'logline' ? 'logline sentence' : k}`, tab: 'pitch', focus: k }
-  if (!filled(p.theme)) return { label: 'Name the theme question', tab: 'pitch', focus: 'theme' }
+  const labels = { hero: 'the hero', want: 'what they want', obstacle: 'what stands in the way', stakes: 'what’s at stake' }
+  for (const k of ['hero', 'want', 'obstacle', 'stakes'] as const)
+    if (!filled(p[k])) return { label: `Write ${labels[k]}`, tab: 'pitch', focus: k }
+  if (!filled(p.whyNow) || !filled(p.whyYou)) return { label: 'Why now and why you', tab: 'pitch', focus: 'why' }
   if (p.kind === 'tv' && !filled(p.engine)) return { label: 'Define the series engine', tab: 'tv', focus: 'engine' }
   const missing = BEAT_KEYS.find((k) => !filled(p.beats[k]))
   if (missing) return { label: `Fill beat ${BEAT_KEYS.indexOf(missing) + 1} of 9`, tab: 'outline', focus: missing }
@@ -130,7 +192,7 @@ export function nextStep(p: Project): NextStep | null {
 export function projectWords(p: Project) {
   let n = 0
   const add = (s: string) => (n += countWords(s))
-  ;[p.title, p.seed, p.hero, p.want, p.obstacle, p.logline, p.theme, p.engine, p.notes].forEach(add)
+  ;[p.title, p.seed, p.hero, p.want, p.obstacle, p.stakes, p.whyNow, p.whyYou, p.comp1, p.comp2, p.budget, p.logline, p.theme, p.engine, p.notes].forEach(add)
   BEAT_KEYS.forEach((k) => {
     add(p.beats[k])
     add(p.seasonBeats[k])
@@ -156,7 +218,7 @@ export const scriptPages = (p: Project) => estimatePages(p.script)
 // Every distinct "step" that can earn credit once.
 export function filledSteps(p: Project): string[] {
   const keys: string[] = []
-  ;(['genre', 'title', 'hero', 'want', 'obstacle', 'logline', 'theme', 'engine'] as const).forEach((k) => {
+  ;(['genre', 'title', 'hero', 'want', 'obstacle', 'stakes', 'whyNow', 'whyYou', 'comp1', 'comp2', 'budget', 'logline', 'theme', 'engine'] as const).forEach((k) => {
     if (filled(p[k])) keys.push(k)
   })
   BEAT_KEYS.forEach((k) => {

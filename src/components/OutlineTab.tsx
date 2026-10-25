@@ -1,5 +1,5 @@
 import { BEAT_KEYS } from '../lib/framework'
-import { actsWithScenes, beatsFilled, isOutlineDone } from '../lib/project'
+import { actsWithScenes, beatsFilled, isLoglineDone, isOutlineDone, pitchText } from '../lib/project'
 import { href } from '../lib/router'
 import type { BeatKey, Project } from '../lib/types'
 import { fmtDate } from '../lib/util'
@@ -40,10 +40,11 @@ export function OutlineTab({ p, initialBeat }: { p: Project; initialBeat?: BeatK
 
 function IdeaSummary({ p }: { p: Project }) {
   const rows = [
-    ['Logline', p.logline],
+    ['Pitch', p.logline.trim() || (isLoglineDone(p) ? pitchText(p) : '')],
     ['Hero', p.hero],
     ['Want', p.want],
     ['In the way', p.obstacle],
+    ['At stake', p.stakes],
     ['Theme', p.theme],
   ].filter(([, v]) => v.trim())
   if (!rows.length)
